@@ -1,7 +1,25 @@
-{% extends 'base.html' %}
+{% extends 'base.html'  %}
 
 {% block content %}
+<div class="card text-dark bg-light mb-3" style="width: 40rem;">
+    <div class="card-header">
+    <h1>Post Audit/Dismantle - Placard</h1>
+    </div>
+  <div class="card-body">
+      <br/>
+            <form target="blank" action="PADPrint" method ="POST">
+                {{ form.hidden_tag() }}
+                {{ form.PoNumber.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.PoNumber(class="form-control form-control-lg") }}
+                {{ form.Commodity.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Commodity(class="form-control form-control-lg") }}
+                {{ form.Data.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Data(class="form-select form-select-lg") }}
+                <br/>
+                {{ form.Submit(class="btn btn-secondary btn-lg")}}
+            </form>
+    </div>
+</div>
 
-    <h1>HELLO</h1>
 
 {% endblock %}

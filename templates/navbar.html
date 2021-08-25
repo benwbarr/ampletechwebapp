@@ -1,9 +1,9 @@
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="index.html">
-    <img src="/images/small.png" alt="" width="65" height="60">
-      </a>
-    <a class="navbar-brand" href="#"></a>
+    <a class="navbar-brand" href="{{ url_for('index') }}">
+      <img src="{{url_for('static', filename='images/small.png')}}"width="60" height="55">
+      AmpleTech Refresh
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -14,20 +14,20 @@
             Placards
           </a>
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-            <li><a class="dropdown-item" href="WholesaleEWaste.html">Wholesale/EWaste</a></li>
+            <li><a class="dropdown-item" href="{{url_for('WholesaleEWasteReceiving') }}">Wholesale/EWaste</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="PostAuditDismantle.html">Post Audit/Dismantle</a></li>
+            <li><a class="dropdown-item" href="{{url_for('PostAuditDismantle') }}">Post Audit/Dismantle</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="WholesaleClientShipping.html">Wholesale - Client Shipping</a></li>
+            <li><a class="dropdown-item" href="">Wholesale - Client Shipping</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="EWasteClientShipping.html">EWaste - Client Shipping</a></li>
+            <li><a class="dropdown-item" href="">EWaste - Client Shipping</a></li>
           </ul>
         </li>
         </ul>
       </div>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
       </form>
     </div>
   </div>
