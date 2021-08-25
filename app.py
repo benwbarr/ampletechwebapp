@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, url_for
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, IntegerField, DateField
+from wtforms import StringField, SubmitField, SelectField, IntegerField, DateField, validators
 from wtforms.validators import DataRequired
 
 
@@ -20,7 +20,7 @@ class WholesaleEWasteReceivingForm(FlaskForm):
 	Client = IntegerField("PO Number", validators=[DataRequired()])
 	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
 	Weight = IntegerField("Weight", validators=[DataRequired()])
-	Date = DateField("Date", validators=[DataRequired()])
+	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
 	Submit = SubmitField("Print")
 
 
