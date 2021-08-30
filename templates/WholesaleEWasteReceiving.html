@@ -1,27 +1,38 @@
 {% extends 'base.html'  %}
 
 {% block content %}
-<div class="card text-dark bg-light mb-3" style="width: 40rem;">
-    <div class="card-header">
-    <h1>Wholesale/EWaste - Receiving Placard</h1>
+<center><div class="card text-dark bg-light mb-3" style="width: 40rem">
+    <div class="card-header" style="background-color:CadetBlue; border: .5px solid Black">
+    <center><h1>Wholesale/EWaste - Receiving Placard</h1></center>
     </div>
-  <div class="card-body">
+  <div class="card-body"style="border: .5px solid Black">
       <br/>
             <form target="blank" action="WEWRPrint" method ="POST">
                 {{ form.hidden_tag() }}
+                <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
                 {{ form.Client.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.Client(class="form-control form-control-lg") }}
+                </div></strong>
+                <strong><div style="border: .5px solid Black; padding: 10px;">
                 {{ form.PoNumber.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.PoNumber(class="form-control form-control-lg") }}
+                </div></strong>
+                <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
                 {{ form.Weight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.Weight(class="form-control form-control-lg") }}
+                </div></strong>
+                <strong><div  style="border: .5px solid Black; padding: 10px;">
                 {{ form.Date.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.Date(class="form-control form-control-lg") }}
-                <br/>
+                </br>
+                    <div div class="col-lg-7">
+                {{ form.Date(class="datepicker") }}
+                    </div>
+                </div></strong>
+               <br><br/>
                 {{ form.Submit(class="btn btn-secondary btn-lg")}}
             </form>
     </div>
-</div>
+</div></center>
 
 
 {% endblock %}

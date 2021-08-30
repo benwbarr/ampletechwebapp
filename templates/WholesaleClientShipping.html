@@ -1,0 +1,135 @@
+{% extends 'base.html'  %}
+
+{% block content %}
+<center><div class="card text-dark bg-light mb-3" style="width: 75rem">
+    <div class="card-header" style="background-color:CadetBlue; border: .5px solid Black">
+    <center><h1>Wholesale - Client Shipping Placard</h1></center>
+    </div>
+  <div class="card-body"style="border: .5px solid Black;">
+
+      <br/>
+            <form class="row g-3" target="blank" action="WCSPrint" method ="POST">
+                {{ form.hidden_tag() }}
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                 <div class="col-md-6".bg-secondary style="border: .5px solid Black; padding: 10px">
+                {{ form.Client.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Client(class="form-control form-control-lg") }}
+                </div>
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px;">
+                {{ form.SoNumber.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.SoNumber(class="form-control form-control-lg") }}
+                </div>
+                </div></strong>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Weight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Weight(class="form-control form-control-lg") }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Dimms.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                    </br>
+                <div class="row g-3">
+                <div class="col-sm">
+                {{ form.Dimms(class="form-control form-control-lg") }}
+                </div>
+                <div class="col-sm">
+                {{ form.Dimms2(class="form-control form-control-lg") }}
+                </div>
+                <div class="col-sm">
+                {{ form.Dimms3(class="form-control form-control-lg") }}
+                </div>
+                </div>
+                </div>
+                </div></strong>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.CurrentPallet.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.CurrentPallet(class="form-control form-control-lg") }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.TotalPallets.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.TotalPallets(class="form-control form-control-lg") }}
+                </div>
+                </div></strong>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Data.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Data(class="form-select form-select-lg") }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.QA.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.QA(class="form-select form-select-lg") }}
+                </div>
+                </div></strong>
+                <br/>
+                <div><h2 style="background-color:LemonChiffon; border: .5px solid Black; padding: 10px">Check What Applies</h2></div>
+                 <strong><div class="row g-3"style="border: .5px solid Black; padding: 10px;  background-color: Gainsboro;">
+                     <div class="col-md-6" style="border: .5px solid Black; padding: 10px; text-align: right">
+                         <h4 style="text-align: center; border: .5px solid Black; padding: 10px; background-color:LemonChiffon;">R2 Controlled Stream</h4>
+                         <div  style="border: .5px solid Black; padding: 5px;">
+                        {{ form.UECM.label(class="form-check-label") }}
+                        {{ form.UECM(class="form-check-input") }}
+                         </div>
+                         <div style="border: .5px solid Black; padding: 5px;">
+                        {{ form.UDM.label(class="form-check-label") }}
+                        {{ form.UDM(class="form-check-input") }}
+                         </div>
+                         <div style="border: .5px solid Black; padding: 5px;">
+                        {{ form.ECTR.label(class="form-check-label") }}
+                        {{ form.ECTR(class="form-check-input") }}
+                         </div>
+                         <div style="border: .5px solid Black; padding: 5px;">
+                        {{ form.FMCEC.label(class="form-check-label") }}
+                        {{ form.FMCEC(class="form-check-input") }}
+                         </div>
+                         <div style="border: .5px solid Black; padding: 5px;">
+                        {{ form.FM.label(class="form-check-label") }}
+                        {{ form.FM(class="form-check-input") }}
+                         </div>
+                         </br>
+                         <div>
+                             <h4 style="text-align: center; background-color:DarkSeaGreen; border: .5px solid Black; padding: 5px">Examples</h4>
+                             <h4 style="text-align: center; background-color:DarkSeaGreen; border: .5px solid Black; padding: 5px">Laptops, Desktops, <br>Tables, Etc...</h4>
+                         </div>
+                     </div>
+                     <div class="col-md-6" style="border: .5px solid Black; padding: 10px; text-align: right">
+                         <h4 style="text-align: center; border: .5px solid Black; padding: 10px; background-color:LemonChiffon;">Unrestricted Stream</h4>
+                         <div style="border: .5px solid Black; padding: 5px;">
+                        {{ form.NECUO.label(class="form-check-label") }}
+                        {{ form.NECUO(class="form-check-input") }}
+                         </div>
+                         <div style="border: .5px solid Black; padding: 5px;">
+                        {{ form.NEE.label(class="form-check-label") }}
+                        {{ form.NEE(class="form-check-input") }}
+                         </div>
+                         <div style="border: .5px solid Black; padding: 5px;">
+                        {{ form.NFM.label(class="form-check-label") }}
+                        {{ form.NFM(class="form-check-input") }}
+                         </div>
+                         <div style="border: .5px solid Black; padding: 5px;">
+                        {{ form.PREC.label(class="form-check-label") }}
+                        {{ form.PREC(class="form-check-input") }}
+                         </div>
+                         <br></br>
+                         <div style="padding: 6px"></div>
+                         <div>
+                             <h4 style="text-align: center; background-color:DarkSeaGreen; border: .5px solid Black; padding: 5px">Examples</h4>
+                             <h4 style="text-align: center; background-color:DarkSeaGreen; border: .5px solid Black; padding: 5px">Wires, cooper, steel, plastic, non-data household appliances</h4>
+                         </div>
+                     </div>
+                </div></strong>
+
+
+
+
+
+                <strong><div class="d-grid gap-2 col-6 mx-auto ">
+                {{ form.Submit(class="btn btn-outline-primary btn-lg")}}
+                </div></strong>
+            </form>
+      </div>
+    </div>
+</div></center>
+
+
+{% endblock %}

@@ -1,25 +1,33 @@
 {% extends 'base.html'  %}
 
 {% block content %}
-<div class="card text-dark bg-light mb-3" style="width: 40rem;">
-    <div class="card-header">
-    <h1>Post Audit/Dismantle - Placard</h1>
+<center><div class="card text-dark bg-light mb-3" style="width: 40rem">
+    <div class="card-header" style="background-color:CadetBlue; border: .5px solid Black">
+    <center><h1>Post Audit/Dismantle - Placard</h1></center>
     </div>
-  <div class="card-body">
+  <div class="card-body"style="border: .5px solid Black">
       <br/>
             <form target="blank" action="PADPrint" method ="POST">
                 {{ form.hidden_tag() }}
+                <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
                 {{ form.PoNumber.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.PoNumber(class="form-control form-control-lg") }}
+                </div></strong>
+                <strong><div style="border: .5px solid Black; padding: 10px">
                 {{ form.Commodity.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.Commodity(class="form-control form-control-lg") }}
+                </div></strong>
+                <center><strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
                 {{ form.Data.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.Data(class="form-select form-select-lg") }}
+                </div></strong></center>
                 <br/>
-                {{ form.Submit(class="btn btn-secondary btn-lg")}}
+                <strong><div class="d-grid gap-2 col-6 mx-auto ">
+                {{ form.Submit(class="btn btn-primary btn-lg")}}
+                </div></strong>
             </form>
     </div>
-</div>
+</div></center>
 
 
 {% endblock %}
