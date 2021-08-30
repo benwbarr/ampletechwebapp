@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="{{ url_for('index') }}" style="font-size: 1.3em;">
-      <img src="{{url_for('static', filename='images/small.png')}}"width="60" height="55">
+      <img src="{{url_for('static', filename='images/small.png')}}"width="55" height="50">
       AmpleTech Refresh
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,7 +9,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
       <ul class="navbar-nav">
-        <li class="nav-item dropdown"; style="font-size: 1.2em;">
+        <li class="nav-item dropdown"; style="font-size: 1.em;">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <strong>Placards</strong>
           </a>
@@ -22,6 +22,9 @@
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{url_for('EWasteClientShipping') }}">EWaste - Client Shipping</a></li>
           </ul>
+        </li>
+        <li class="nav-item">
+            <strong><a class="nav-link" href="{{url_for('add_WD') }}">Weights and Dimms</a></strong>
         </li>
         </ul>
       </div>

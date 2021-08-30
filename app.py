@@ -4,17 +4,59 @@ from wtforms import StringField, SubmitField, SelectField, IntegerField, DateFie
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired
 import sys
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 sys.setrecursionlimit(2000)
 
 
 
 #Flask Instance
 app = Flask(__name__)
+
+#add database
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///wd.db"
+#secret key
 app.config['SECRET_KEY'] = "super secret key"
+#Initialize the database
+db= SQLAlchemy(app)
+
+#create model
+
+class WD(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	Company_Name = db.Column(db.String(50), nullable=False)
+	SO = db.Column(db.String(50), nullable=False)
+	Pallet = db.Column(db.Integer, nullable=False)
+	Length = db.Column(db.Integer, nullable=False)
+	Width = db.Column(db.Integer, nullable=False)
+	Height = db.Column(db.Integer, nullable=False)
+	Weight = db.Column(db.Integer, nullable=False)
+	Status = db.Column(db.String(50), nullable=False)
+	date_added = db.Column(db.DateTime, default=datetime.utcnow)
+
+	#Create A String
+	def __repr__(self):
+		return 'Name %r>' % self.name
 
 
 
 #create form class
+class WDForm(FlaskForm):
+	Company_Name = StringField("Company Name", validators=[DataRequired()])
+	SO = StringField("Sales Order", validators=[DataRequired()])
+	Pallet = IntegerField("Pallet", validators=[DataRequired()])
+	Length = IntegerField("Length", validators=[DataRequired()])
+	Width = IntegerField("Width", validators=[DataRequired()])
+	Height = IntegerField("Height", validators=[DataRequired()])
+	Weight = IntegerField("Weight", validators=[DataRequired()])
+	Status = SelectField("Status", choices=[('Complete', 'Complete'), ('Not Complete', 'Not Complete')] ,validators=[DataRequired()])
+	Submit = SubmitField("Print")
+
+
+
+
+
+
 class PostAuditDismantleForm(FlaskForm):
 	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
 	Commodity = StringField("Commodity", validators=[DataRequired()])
@@ -60,7 +102,7 @@ class EWasteClientShippingForm(FlaskForm):
 	Dimms2 = StringField("Dimms", validators=[DataRequired()])
 	Dimms3 = StringField("Dimms", validators=[DataRequired()])
 	Commodity = StringField("Commodity", validators=[DataRequired()])
-	Category = SelectField("Data", choices=[('C0', 'C0'), ('C1', 'C1'), ('C2', 'C2')])
+	Category = SelectField("Category", choices=[('C0', 'C0'), ('C1', 'C1'), ('C2', 'C2')])
 	CurrentPallet = StringField("Current Pallet", validators=[DataRequired()])
 	TotalPallets = StringField("Total Pallets", validators=[DataRequired()])
 	Evaluated = SelectField("Evaluated", choices=[('YES', 'YES'), ('NO', 'NO')])
@@ -79,6 +121,16 @@ class EWasteClientShippingForm(FlaskForm):
 
 
 #Route decorator
+@app.route('/WD/add', methods=['Get','POST'])
+def add_WD():
+	form = WDForm()
+	if form.validate_on_submit():
+		wd = WD(Company_Name=form.Company_Name.data,
+				)
+	return render_template("add_WD.html" ,form = form)
+
+
+
 @app.route('/')
 
 def index():
