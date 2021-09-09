@@ -1,0 +1,79 @@
+{% extends 'base.html'  %}
+
+{% block content %}
+
+{% for message in get_flashed_messages() %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+  {{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+
+    {{ message }}
+{% endfor %}
+
+{% if Status  %}
+<center><div class="card text-dark bg-light mb-3" style="width: 65rem">
+    <div class="card-header" style="background-color:Gainsboro; border: .5px solid Black">
+
+<br/>
+        <center><div class="card text-dark bg-light mb-3" style="width: 40rem">
+            <div class="card-header" style="background-color:GhostWhite; border: .5px solid Black">
+                <br/>
+                <center><h1 class="rounded-3">{{ Company_Name }} Was Updated!</h1></center>
+        <br/>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a href="{{url_for('add_WD')}}" class="btn btn-outline-primary btn-lg" tabindex="-1" role="button" aria-disabled="true">Back To W&Ds</a>
+            <br/>
+        </div>
+                </div>
+        </div></center>
+    </div>
+</div></center>
+{% else %}
+<center><div class="card text-dark bg-light mb-3" style="width: 65rem">
+    <div class="card-header" style="background-color:CadetBlue; border: .5px solid Black">
+    <center><h1>Update W&Ds - Warehouse</h1></center>
+    </div>
+  <div class="card-body"style="border: .5px solid Black">
+      <br/>
+            <form class="row g-3" target="blank" action="/WD_update/{{WD_to_update.id}}" method ="POST">
+                {{ form.hidden_tag() }}
+
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;  background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Company_Name.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Company_Name(style="text-align: center",class="form-control form-control-lg",value=WD_to_update.Company_Name) }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.SO.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.SO(style="text-align: center",class="form-control form-control-lg",value=WD_to_update.SO) }}
+                </div>
+                </div></strong>
+                <strong><div style="border: .5px solid Black; padding: 10px;">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Status.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Status(class="form-control form-control-lg",value=WD_to_update.Status) }}
+                </div>
+                    <div style="  padding: 5px">
+                </div>
+                </div></strong>
+
+                <br/>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;  background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Submit(class="btn btn-outline-primary btn-lg")}}
+                  </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                <a href="{{url_for('add_WD')}}" class="btn btn-outline-primary btn-lg" tabindex="-1" role="button" aria-disabled="true">Back To W&Ds</a>
+                </div>
+                </div></strong>
+            </form>
+  </div>
+</div></center>
+
+<br/><br/><br/>
+
+{% endif %}
+
+{% endblock %}

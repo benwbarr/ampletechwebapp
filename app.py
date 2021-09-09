@@ -1,11 +1,14 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, IntegerField, DateField, validators, BooleanField
-from wtforms.fields.html5 import DateField
+from wtforms import StringField, SubmitField, SelectField, IntegerField, DateField, validators, BooleanField, DateTimeField
+from wtforms.fields.html5 import DateField, DateTimeField
 from wtforms.validators import DataRequired
 import sys
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from datetime import datetime
+from jinja2 import environment, filters
 sys.setrecursionlimit(2000)
 
 
@@ -14,29 +17,35 @@ sys.setrecursionlimit(2000)
 app = Flask(__name__)
 
 #add database
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///wd.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://benwebwd:w8TBX&MsZvC&F92Qc9Fa9c@10.104.1.52/wd"
 #secret key
 app.config['SECRET_KEY'] = "super secret key"
 #Initialize the database
-db= SQLAlchemy(app)
+Bootstrap(app)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
 
 #create model
 
 class WD(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	Company_Name = db.Column(db.String(50), nullable=False)
+	Company_Name = db.Column(db.String(100), nullable=False)
 	SO = db.Column(db.String(50), nullable=False)
 	Pallet = db.Column(db.Integer, nullable=False)
+	Shipping = db.Column(db.String(50), nullable=False)
 	Length = db.Column(db.Integer, nullable=False)
 	Width = db.Column(db.Integer, nullable=False)
 	Height = db.Column(db.Integer, nullable=False)
 	Weight = db.Column(db.Integer, nullable=False)
+	Total_Weight = db.Column(db.Integer, nullable=False)
 	Status = db.Column(db.String(50), nullable=False)
+	date = db.Column(db.Date, nullable=True)
 	date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
 	#Create A String
 	def __repr__(self):
-		return 'Name %r>' % self.name
+		return 'WD %r>' % self.Company_Name
 
 
 
@@ -45,17 +54,59 @@ class WDForm(FlaskForm):
 	Company_Name = StringField("Company Name", validators=[DataRequired()])
 	SO = StringField("Sales Order", validators=[DataRequired()])
 	Pallet = IntegerField("Pallet", validators=[DataRequired()])
+	Shipping = SelectField("Shipping", choices=[('Domestic', 'Domestic'), ('International', 'International')] ,validators=[DataRequired()])
 	Length = IntegerField("Length", validators=[DataRequired()])
 	Width = IntegerField("Width", validators=[DataRequired()])
 	Height = IntegerField("Height", validators=[DataRequired()])
 	Weight = IntegerField("Weight", validators=[DataRequired()])
-	Status = SelectField("Status", choices=[('Complete', 'Complete'), ('Not Complete', 'Not Complete')] ,validators=[DataRequired()])
-	Submit = SubmitField("Print")
+	Total_Weight = IntegerField("Total Weight", validators=[DataRequired()])
+	Status = SelectField("Status", choices=[('Not Complete', 'Not Complete'), ('Complete', 'Complete')] ,validators=[DataRequired()])
+	date = DateField("Date", validators=[DataRequired()])
+	Submit = SubmitField("Submit")
 
+@app.route('/WD_update/<int:id>', methods=['GET', 'POST'])
+def WD_update(id):
+	Company_Name = None
+	SO = None
+	Status = None
+	form = WDForm()
+	WD_to_update = WD.query.get_or_404(id)
+	if form.validate_on_submit():
+		Company_Name = form.Company_Name.data
+		SO = form.SO.data
+		Status = form.Status.data
+		form.Company_Name.data = ""
+		form.SO.data = ""
+		form.Status.data = ""
+	if request.method == "POST":
+		WD_to_update.Company_Name = request.form['Company_Name']
+		WD_to_update.SO = request.form['SO']
+		WD_to_update.Status = request.form['Status']
+		try:
+			db.session.commit()
+			flash(" Updated Successfuly!")
+			return render_template("WD_update.html",
+			   form=form,
+			   Company_Name=Company_Name,
+			   SO = SO,
+				Status=Status,
+			   WD_to_update = WD_to_update)
 
+		except:
+			flash("ERROR!! W&D Not Updated")
+			return render_template("WD_update.html",
+			   form=form,
+			   Company_Name=Company_Name,
+			   Status=Status,
+			   WD_to_update=WD_to_update)
 
-
-
+	else:
+		return render_template("WD_update.html",
+			   form=form,
+			   Company_Name=Company_Name,
+			   SO=SO,
+			   Status=Status,
+			   WD_to_update=WD_to_update)
 
 class PostAuditDismantleForm(FlaskForm):
 	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
@@ -120,14 +171,134 @@ class EWasteClientShippingForm(FlaskForm):
 	Submit = SubmitField("Print")
 
 
+
+@app.route('/delete/<int:id>')
+def delete(id):
+	wd_to_delete = WD.query.get_or_404(id)
+	Company_Name = None
+	SO = None
+	Pallet = None
+	Shipping = None
+	Length = None
+	Width = None
+	Height = None
+	Weight = None
+	Total_Weight = None
+	date = None
+	Status = None
+	form = WDForm()
+	try:
+		db.session.delete(wd_to_delete)
+		db.session.commit()
+		flash("Deleted Successfully")
+
+		our_wds = WD.query.order_by(WD.date_added)
+		return render_template("add_WD.html",
+	    form=form,
+	    Company_Name=Company_Name,
+	    SO=SO,
+	    Pallet=Pallet,
+	    Shipping=Shipping,
+	    Length=Length,
+	    Width=Width,
+	    Height=Height,
+	    Weight=Weight,
+	    Total_Weight=Total_Weight,
+	    date=date,
+	    Status=Status,
+	    our_wds=our_wds)
+
+	except:
+		flash("Error Could Not Delete!")
+		return render_template("add_WD.html",
+							   form=form,
+							   Company_Name=Company_Name,
+							   SO=SO,
+							   Pallet=Pallet,
+							   Shipping=Shipping,
+							   Length=Length,
+							   Width=Width,
+							   Height=Height,
+							   Weight=Weight,
+							   Total_Weight=Total_Weight,
+							   date=date,
+							   Status=Status,
+							   our_wds=our_wds)
+
+
 #Route decorator
-@app.route('/WD/add', methods=['Get','POST'])
+@app.route('/WD/add', methods=['GET','POST'])
 def add_WD():
+	Company_Name = None
+	SO = None
+	Pallet = None
+	Shipping = None
+	Length = None
+	Width = None
+	Height = None
+	Weight = None
+	Total_Weight = None
+	date = None
+	Status = None
 	form = WDForm()
 	if form.validate_on_submit():
 		wd = WD(Company_Name=form.Company_Name.data,
-				)
-	return render_template("add_WD.html" ,form = form)
+				SO=form.SO.data,
+				Pallet=form.Pallet.data,
+				Shipping=form.Shipping.data,
+				Length=form.Length.data,
+				Width=form.Width.data,
+				Height=form.Height.data,
+				Weight=form.Weight.data,
+				Total_Weight=form.Total_Weight.data,
+				date=form.date.data,
+				Status=form.Status.data)
+		db.session.add(wd)
+		db.session.commit()
+	Company_Name = form.Company_Name.data
+	form.Company_Name.data = ''
+	SO = form.SO.data
+	form.SO.data = ''
+	Pallet = form.Pallet.data
+	form.Pallet.data = ''
+	Shipping = form.Shipping.data
+	form.Shipping.data = ''
+	Length = form.Length.data
+	form.Length.data = ''
+	Width = form.Width.data
+	form.Width.data = ''
+	Height = form.Height.data
+	form.Height.data = ''
+	Weight = form.Weight.data
+	form.Weight.data = ''
+	Total_Weight = form.Total_Weight.data
+	form.Total_Weight.data = ''
+	date = form.date.data
+	form.date.data = ''
+	Status = form.Status.data
+	form.Status.data = ''
+	our_wds =WD.query.order_by(WD.date_added)
+	return render_template("add_WD.html",
+						   form = form,
+						   Company_Name=Company_Name,
+						   SO=SO,
+						   Pallet=Pallet,
+						   Shipping=Shipping,
+						   Length=Length,
+						   Width=Width,
+						   Height=Height,
+						   Weight=Weight,
+						   Total_Weight=Total_Weight,
+						   date=date,
+						   Status=Status,
+						   our_wds=our_wds)
+
+@app.route('/CompleteWD')
+def CompleteWD():
+	#Grab all W&Ds from DB
+	WDs = WD.query.order_by(WD.date_added)
+	return render_template("CompleteWD.html", WDs=WDs)
+
 
 
 
@@ -149,12 +320,12 @@ def PostAuditDismantle():
 	#Validate Form
 	if form.validate_on_submit():
 		PoNumber = form.PoNumber.data
-		form.PoNumber.data = ''
+		form.PoNumber.data = ""
 		Commodity = form.Commodity.data
-		form.Commodity.data = ''
+		form.Commodity.data = ""
 		Data = form.Data.data
-		form.Data.data = ''
-
+		form.Data.data = ""
+		return redirect(url_for('PostAuditDismantle'))
 
 	return render_template("PostAuditDismantle.html",
 		PoNumber = PoNumber,
@@ -187,12 +358,12 @@ def  WholesaleEWasteReceiving():
 	#Validate Form
 	if form.validate_on_submit():
 		Client = form.Client.data
-		form.Client.data = ''
 		PoNumber = form.PoNumber.data
-		form.PoNumber.data = ''
 		Weight = form.Weight.data
-		form.Weight.data = ''
 		Date = form.Date.data
+		form.Client.data = ''
+		form.PoNumber.data = ''
+		form.Weight.data = ''
 		form.Date.data = ''
 
 
@@ -205,6 +376,8 @@ def  WholesaleEWasteReceiving():
 
 @app.route('/WEWRPrint', methods= ["POST"])
 
+
+
 def WEWRPrint():
 	Client = request.form.get("Client")
 	PoNumber = request.form.get("PoNumber")
@@ -216,6 +389,7 @@ def WEWRPrint():
 		PoNumber=PoNumber,
 		Weight=Weight,
 		Date=Date)
+
 
 @app.route('/WholesaleClientShipping ', methods=['GET', 'POST'])
 

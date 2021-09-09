@@ -1,46 +1,94 @@
 {% extends 'base.html'  %}
 
 {% block content %}
-<center><div class="card text-dark bg-light mb-3" style="width: 40rem">
+
+
+
+{% if Company_Name %}
+<center><div class="card text-dark bg-light mb-3" style="width: 65rem">
     <div class="card-header" style="background-color:CadetBlue; border: .5px solid Black">
-    <center><h1>W&Ds - Warehouse</h1></center>
+
+<br/>
+        <center><div class="card text-dark bg-light mb-3" style="width: 40rem">
+            <div class="card-header" style="background-color:Gainsboro; border: .5px solid Black">
+                <br/>
+                <center><h1 class="rounded-3">{{ Company_Name }} W&D Has Been Submitted!</h1></center>
+        <br/>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a href="{{url_for('add_WD')}}" class="btn btn-outline-primary btn-lg" tabindex="-1" role="button" aria-disabled="true">Back To W&Ds</a>
+            <br/>
+        </div>
+                </div>
+        </div></center>
+    </div>
+</div></center>
+{% else %}
+<center><div class="card text-dark bg-light mb-3" style="width: 65rem">
+    <div class="card-header" style="background-color:CadetBlue; border: .5px solid Black">
+    <center><h1 style="border: .5px solid Black; padding: 12px; background-color: White;">W&Ds - Warehouse</h1></center>
     </div>
   <div class="card-body"style="border: .5px solid Black">
       <br/>
-            <form target="blank" action="" method ="POST">
+            <form class="row g-3" target="blank" action="" method ="POST">
                 {{ form.hidden_tag() }}
 
-                <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;  background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
                 {{ form.Company_Name.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.Company_Name(class="form-control form-control-lg") }}
-                </div></strong><strong><div style="border: .5px solid Black; padding: 10px;">
+                {{ form.Company_Name(style="text-align: center",class="form-control form-control-lg") }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
                 {{ form.SO.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.SO(class="form-control form-control-lg") }}
+                {{ form.SO(style="text-align: center",class="form-control form-control-lg") }}
+                </div>
                 </div></strong>
-                <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
                 {{ form.Pallet.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.Pallet(class="form-control form-control-lg") }}
+                {{ form.Pallet(style="text-align: center",class="form-control form-control-lg") }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Shipping.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Shipping(style="text-align: center",class="form-control form-control-lg") }}
+                </div>
                 </div></strong>
-                <center><strong><div style="border: .5px solid Black; padding: 10px;o">
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;  background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
                 {{ form.Length.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.Length(class="form-control form-control-lg") }}
-                </div></strong></center>
-                <center><strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                {{ form.Length(style="text-align: center",class="form-control form-control-lg") }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
                 {{ form.Width.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.Width(class="form-control form-control-lg") }}
-                </div></strong></center>
-                <center><strong><div style="border: .5px solid Black; padding: 10px;">
+                {{ form.Width(style="text-align: center",class="form-control form-control-lg") }}
+                </div>
+                </div></strong>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
                 {{ form.Height.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.Height(class="form-control form-control-lg") }}
-                </div></strong></center>
-                <center><strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                {{ form.Height(style="text-align: center",class="form-control form-control-lg") }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
                 {{ form.Weight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.Weight(class="form-control form-control-lg") }}
-                </div></strong></center>
-                <center><strong><div style="border: .5px solid Black; padding: 10px;">
+                {{ form.Weight(style="text-align: center",class="form-control form-control-lg") }}
+                </div>
+                </div></strong>
+
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;  background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Total_Weight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Total_Weight(style="text-align: center",class="form-control form-control-lg") }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
                 {{ form.Status.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.Status(class="form-select form-select-lg") }}
-                </div></strong></center>
+                </div>
+                </div></strong>
+                <strong><div style="border: .5px solid Black; padding: 10px;">
+                    <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.date.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.date(class="form-select form-select-lg") }}
+                    </div>
+                </div></strong>
                 <br/>
                 <strong><div class="d-grid gap-2 col-6 mx-auto ">
                 {{ form.Submit(class="btn btn-outline-primary btn-lg")}}
@@ -49,6 +97,54 @@
     </div>
 </div></center>
 
+<br/><br/><br/>
+{% for our_wd in our_wds %}
+    {% if our_wd.Status == 'Not Complete' %}
+<center><div class="card">
+<center><div class="card-body"style="border: .5px solid Black; background-color: White; width: 85rem">
 
+    <center><table class="table table-hover table-bordered border-dark">
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td class="table-secondary" style="text-align: center;"><a href="{{url_for('WD_update', id=our_wd.id)}}">ID: {{our_wd.id }}</a></td>
+                <td class="table-secondary" style="text-align: center;">{{our_wd.Company_Name }}</td>
+                <td class="table-success" style="text-align: center;">SO- {{our_wd.SO }}</td>
+                <td class="table-success" style="text-align: center;">{{ our_wd.Shipping }}</td>
+                <td class="table-success" style="text-align: center;"></td>
+                <td class="table-success" style="text-align: center;">Date: {{ our_wd.date }}</td>
+                <td class="table-success" style="text-align: center;"><a href="{{url_for('delete', id=our_wd.id)}}" class="btn btn-outline-danger btn-sm">Delete</a></td>
+
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td class="table-secondary" style="text-align: center;">Pallet</td>
+                <td class="table-secondary" style="text-align: center;">Length</td>
+                <td class="table-secondary" style="text-align: center;">Width</td>
+                <td class="table-secondary" style="text-align: center;">Height</td>
+                <td class="table-secondary" style="text-align: center;">Weight</td>
+                <td class="table-secondary" style="text-align: center;">Total Weight</td>
+                <td class="table-secondary" style="text-align: center;">Status</td>
+            </tr>
+             <tr>
+                <th scope="row">3</th>
+                <td class="table-secondary" style="text-align: center;">{{our_wd.Pallet }}</td>
+                <td style="text-align: center;">{{our_wd.Length }}</td>
+                <td style="text-align: center;">{{our_wd.Width }}</td>
+                <td style="text-align: center;">{{our_wd.Height }}</td>
+                <td style="text-align: center;">{{our_wd.Weight }}</td>
+                 <td style="text-align: center;">{{our_wd.Total_Weight}}</td>
+                 <td style="text-align: center;"><a href="{{url_for('WD_update', id=our_wd.id)}}">{{our_wd.Status }}</a></td>
+             </tr>
+        </tbody>
+    </table></center>
+</div></center>
+</div></center>
+<br/>
+    {% else %}
+{% endif %}
+{% endfor %}
+
+{% endif %}
 
 {% endblock %}
