@@ -26,6 +26,9 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
+
+
+
 #create model
 
 class WD(db.Model):
@@ -298,8 +301,6 @@ def CompleteWD():
 	#Grab all W&Ds from DB
 	WDs = WD.query.order_by(WD.date_added)
 	return render_template("CompleteWD.html", WDs=WDs)
-
-
 
 
 @app.route('/')

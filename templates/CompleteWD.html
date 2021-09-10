@@ -1,6 +1,10 @@
 {% extends 'base.html'  %}
 
+
+
+
 {% block content %}
+
 
 
 <strong><center><div class="card text-center"style="border: .5px solid Black; background-color: CadetBlue; width: 85rem">
@@ -9,52 +13,93 @@
   </div>
 </div></center></strong>
 <br/><br/>
+
+<form class="d-flex" method = "GET">
+        <input id="search" class="form-control me-2" type="search" placeholder="Search" name="q" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+
+
+
 {% for WD in WDs %}
     {% if WD.Status == 'Complete' %}
-<center><div class="card">
-<center><div class="card-body"style="border: .5px solid Black; background-color: White; width: 85rem">
 
-    <center><table class="table table-hover table-bordered border-dark" border="3">
+
+<br/>
+
+<center><div id="bar" class="card-body"style="border: .5px solid Black; background-color: White; width: 85rem">
+
+
+
+    <table id="testTable" class="table table-hover table-bordered border-dark" border="3">
         <tbody>
+
             <tr>
-                <th scope="row">1</th>
-                <td class="table-secondary" style="text-align: center;" contenteditable='true'><a href="{{url_for('WD_update', id=WD.id)}}">ID: {{WD.id }}</a></td>
-                <td class="table-secondary" style="text-align: center;" contenteditable='true'>{{WD.Company_Name }}</td>
-                <td class="table-success" style="text-align: center;" contenteditable='true'>SO- {{WD.SO }}</td>
-                <td class="table-success" style="text-align: center;" contenteditable='true'>{{ WD.Shipping }}</td>
-                <td class="table-success" style="text-align: center;" contenteditable='true'></td>
-                <td class="table-success" style="text-align: center;" contenteditable='true'>Date: {{ WD.date }}</td>
-                <td class="table-success" style="text-align: center;"><a href="{{url_for('delete', id=WD.id)}}" class="btn btn-outline-danger btn-sm">Delete</a></td>
+
+                <td colspan="2"  class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>{{WD.Company_Name }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>SO- {{WD.SO }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>{{ WD.Shipping }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'></td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>Date: {{ WD.date }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;"></td>
 
             </tr>
             <tr>
-                <th scope="row">2</th>
-                <td class="table-secondary" style="text-align: center;" contenteditable='true'>Pallet</td>
-                <td class="table-secondary" style="text-align: center;" contenteditable='true'>Length</td>
-                <td class="table-secondary" style="text-align: center;" contenteditable='true'>Width</td>
-                <td class="table-secondary" style="text-align: center;" contenteditable='true'>Height</td>
-                <td class="table-secondary" style="text-align: center;" contenteditable='true'>Weight</td>
-                <td class="table-secondary" style="text-align: center;" contenteditable='true'>Total Weight</td>
-                <td class="table-secondary" style="text-align: center;" contenteditable='true'>Status</td>
+
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Pallet</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Length</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Width</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Height</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Weight</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Total Weight</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Status</td>
             </tr>
              <tr>
-                <th scope="row">3</th>
-                <td class="table-secondary" style="text-align: center;" contenteditable='true'>{{WD.Pallet }}</td>
-                <td style="text-align: center;" contenteditable='true'>{{WD.Length }}</td>
-                <td style="text-align: center;" contenteditable='true'>{{WD.Width }}</td>
-                <td style="text-align: center;" contenteditable='true'>{{WD.Height }}</td>
-                <td style="text-align: center;" contenteditable='true'>{{WD.Weight }}</td>
-                 <td style="text-align: center;" contenteditable='true'>{{WD.Total_Weight}}</td>
-                 <td style="text-align: center;" contenteditable='true'><a href="{{url_for('WD_update', id=WD.id)}}">{{WD.Status }}</a></td>
+
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center;" contenteditable='false'>{{WD.Pallet }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{WD.Length }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{WD.Width }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{WD.Height }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{WD.Weight }}</td>
+                 <td style="text-align: center;" contenteditable='false'>{{WD.Total_Weight}}</td>
+                 <td style="text-align: center;" contenteditable='false'><a href="{{url_for('WD_update', id=WD.id)}}">{{WD.Status }}</a></td>
              </tr>
+
+
+
         </tbody>
-    </table></center>
+
+    </table>
+
+    <div class="container">
+  <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+          <div class="row">
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4 offset-md-4" style="padding-left: 280px;">
+                <right><a href="{{url_for('delete', id=WD.id)}}" class="btn btn-outline-danger me-md-3 btn-sm">Delete</a></right>
+
+            </div>
+          </div>
+    </div>
 </div></center>
-</div></center>
+
 <br/>
+
+
     {% else %}
 
+
 {% endif %}
+
+
 {% endfor %}
 
+
 {% endblock %}
+
+
+
+
+
+
