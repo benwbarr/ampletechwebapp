@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: javascript.py
+Version: 1.0.3
+Summary: This package lets you use Javascript like objects in python.
+Home-page: UNKNOWN
+Author: Swas.py
+Author-email: cwswas.py@gmail.com
+License: UNKNOWN
+Description: # Javascript.py
+        
+        This package lets you use javascript like objects in python.
+        
+        ## Installation
+        
+        Stable version:
+        
+        ```
+        pip install javascript.py
+        ```
+        
+        Working version:
+        
+        ```
+        pip install git+https://github.com/CodeWithSwastik/javascript-py
+        ```
+        
+        ## Example Usage
+        
+        ```python
+        from javascript import console, Array
+        
+        array = Array([1,2,3])
+        console.log(array.find(lambda x: x > 2))
+        ```
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown

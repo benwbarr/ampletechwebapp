@@ -1,0 +1,104 @@
+<!-- Search Bar -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-
+        scale=1">
+
+         <!-- Bootstrap CSS -->
+        <style>
+        body
+        {
+        background-image:url({{url_for('static',filename='images/earth.jpg')}})
+        }
+        </style>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <title>AmpleTech Refresh</title>
+  </head>
+  <body>
+    {% include 'navbar.html' %}
+
+    <strong><center><div class="card text-center"style="border: .5px solid Black; background-color: CadetBlue; width: 85rem">
+        <div class="card-body" style="border: .5px solid Black;">
+        <h1 style="border: .5px solid Black; padding: 12px; background-color: White;">Search W&Ds</h1>
+        <form class="d-flex" method="post" action=""
+         style="margin:auto;max-width:600px">
+            <input class="form-control me-2" type="text" placeholder="Search" name="book">
+            <button  class="btn btn-outline-success" type="submit"><i class="fa fa-search"></i>Search
+            </button>
+        </form>
+        </div>
+    </div></center></strong>
+        <p></p>
+        <center>
+        {% for item in data %}
+
+        <center><div id="bar" class="card-body"style="border: .5px solid Black; background-color: White; width: 85rem">
+            <table id="testTable" class="table table-hover table-bordered border-dark" border="3">
+        <tbody>
+
+            <tr>
+
+                <td colspan="2"  class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>{{item[1] }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>SO - {{item[2] }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>{{item[3] }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'></td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>{{item[4] }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'></td>
+            </tr>
+            <tr>
+
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Pallet</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Length</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Width</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Height</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Weight</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Total Weight</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Status</td>
+            </tr>
+            <tr>
+
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center;" contenteditable='false'>{{item[5]  }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{item[6] }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{item[7] }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{item[8] }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{item[9] }}</td>
+                 <td style="text-align: center;" contenteditable='false'>{{item[10] }}</td>
+                <td style="text-align: center;" contenteditable='false'><a href="{{url_for('WD_update', id=item.0)}}">{{item[11] }}</a></td>
+             </tr>
+
+            </table>
+                <div class="container">
+  <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+          <div class="row">
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-4 offset-md-4" style="padding-left: 280px;">
+                <right><a href="{{url_for('delete', id=item.0)}}" class="btn btn-outline-danger me-md-3 btn-sm">Delete</a></right>
+
+            </div>
+          </div>
+    </div>
+</div></center>
+                   </div>
+    </div>
+            </div></center>
+        {% endfor %}
+
+
+     <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+    -->
+        </center>
+  </body>
+</html>

@@ -1,9 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, IntegerField, DateField, validators, BooleanField, DateTimeField
 from wtforms.fields.html5 import DateField, DateTimeField
 from wtforms.validators import DataRequired
+from flask_mysqldb import MySQL, MySQLdb
+from flaskext.mysql import MySQL
+import pymysql
 import sys
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -28,8 +31,17 @@ migrate = Migrate(app, db)
 
 
 
+app.config['MYSQL_DATABASE_USER'] = 'benwebwd'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'w8TBX&MsZvC&F92Qc9Fa9c'
+app.config['MYSQL_DATABASE_DB'] = 'wd'
+app.config['MYSQL_DATABASE_HOST'] = '10.104.1.52'
 
-#create model
+mysql = MySQL()
+mysql.init_app(app)
+
+conn = mysql.connect()
+cursor = conn.cursor()
+
 
 class WD(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -66,6 +78,8 @@ class WDForm(FlaskForm):
 	Status = SelectField("Status", choices=[('Not Complete', 'Not Complete'), ('Complete', 'Complete')] ,validators=[DataRequired()])
 	date = DateField("Date", validators=[DataRequired()])
 	Submit = SubmitField("Submit")
+
+
 
 @app.route('/WD_update/<int:id>', methods=['GET', 'POST'])
 def WD_update(id):
@@ -229,6 +243,9 @@ def delete(id):
 							   our_wds=our_wds)
 
 
+
+
+
 #Route decorator
 @app.route('/WD/add', methods=['GET','POST'])
 def add_WD():
@@ -296,11 +313,33 @@ def add_WD():
 						   Status=Status,
 						   our_wds=our_wds)
 
-@app.route('/CompleteWD')
+@app.route('/CompleteWD', methods=['GET','POST'])
 def CompleteWD():
 	#Grab all W&Ds from DB
 	WDs = WD.query.order_by(WD.date_added)
 	return render_template("CompleteWD.html", WDs=WDs)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == "POST":
+        WD = request.form['book']
+        # search by author or book
+        cursor.execute("SELECT id, Company_Name, SO, Shipping, date, Pallet, Length, Width, Height, Weight, Total_Weight, Status "
+					   "from WD WHERE id LIKE %s OR Company_Name LIKE %s OR SO LIKE %s OR Shipping LIKE %s OR date LIKE %s"
+						"OR Pallet LIKE %s OR Length LIKE %s OR Width LIKE %s OR Height LIKE %s OR Weight LIKE %s OR Total_Weight LIKE %s OR Status LIKE %s",
+
+					   (WD, WD, WD, WD, WD, WD, WD, WD, WD, WD, WD, WD))
+        conn.commit()
+        data = cursor.fetchall()
+        # all in the search box will return all the tuples
+        if len(data) == 0 and WD == 'all':
+            cursor.execute("SELECT id, Company_Name, SO, Shipping, date, Pallet, Length, Width, Height, Weight, Total_Weight, Status from WD")
+            conn.commit()
+            data = cursor.fetchall()
+        return render_template('search.html', data=data)
+    return render_template('search.html')
+
 
 
 @app.route('/')
@@ -674,5 +713,6 @@ def EWCSPrint():
 
 
 
-
+if __name__ == "__main__":
+    app.run(debug=True)
 

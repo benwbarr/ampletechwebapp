@@ -1,10 +1,6 @@
 {% extends 'base.html'  %}
 
-
-
-
 {% block content %}
-
 
 
 <strong><center><div class="card text-center"style="border: .5px solid Black; background-color: CadetBlue; width: 85rem">
@@ -13,13 +9,6 @@
   </div>
 </div></center></strong>
 <br/><br/>
-
-<form class="d-flex" method = "GET">
-        <input id="search" class="form-control me-2" type="search" placeholder="Search" name="q" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-
-
 
 {% for WD in WDs %}
     {% if WD.Status == 'Complete' %}
@@ -37,7 +26,7 @@
             <tr>
 
                 <td colspan="2"  class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>{{WD.Company_Name }}</td>
-                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>SO- {{WD.SO }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>SO - {{WD.SO }}</td>
                 <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>{{ WD.Shipping }}</td>
                 <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'></td>
                 <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>Date: {{ WD.date }}</td>
@@ -97,7 +86,6 @@
 
 
 {% endblock %}
-
 
 
 
