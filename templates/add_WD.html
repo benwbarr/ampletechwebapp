@@ -1,8 +1,18 @@
 {% extends 'base.html'  %}
 
 {% block content %}
-
-
+<div clas="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <span>{{ message }}</span>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif%}
+    {% endwith %}
+</div>
 
 {% if Company_Name %}
 <center><div class="card text-dark bg-light mb-3" style="width: 65rem">
@@ -113,7 +123,7 @@
                 <td class="table-success" style="text-align: center;">{{ our_wd.Shipping }}</td>
                 <td class="table-success" style="text-align: center;"></td>
                 <td class="table-success" style="text-align: center;">Date: {{ our_wd.date }}</td>
-                <td class="table-success" style="text-align: center;"><a href="{{url_for('delete', id=our_wd.id)}}" class="btn btn-outline-danger btn-sm">Delete</a></td>
+                <td class="table-success" style="text-align: center;"><a href="{{url_for('delete', id=our_wd.id)}}" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</a></td>
 
             </tr>
             <tr>
@@ -131,13 +141,36 @@
                 <td class="table-secondary" style="text-align: center;">{{our_wd.Pallet }}</td>
                 <td style="text-align: center;">{{our_wd.Length }}</td>
                 <td style="text-align: center;">{{our_wd.Width }}</td>
-                <td style="text-align: center;">{{our_wd.Height }}</td>
+                 {% if our_wd.Shipping == 'Domestic' and our_wd.Height > 72 or our_wd.Shipping == 'International' and our_wd.Height > 90 %}
+                     <td class="table-danger" style="text-align: center;">{{our_wd.Height }}</td>
+                 {% else %}
+                    <td style="text-align: center;">{{our_wd.Height }}</td>
+                 {% endif %}
                 <td style="text-align: center;">{{our_wd.Weight }}</td>
                  <td style="text-align: center;">{{our_wd.Total_Weight}}</td>
                  <td style="text-align: center;"><a href="{{url_for('WD_update', id=our_wd.id)}}">{{our_wd.Status }}</a></td>
              </tr>
         </tbody>
     </table></center>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete W&D</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete this W&D?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <right><a href="{{url_for('delete', id=our_wd.id)}}" class="btn btn-outline-danger me-md-3 btn-sm">Delete</a></right>
+          </div>
+
+        </div>
+      </div>
+    </div>
 </div></center>
 </div></center>
 <br/>

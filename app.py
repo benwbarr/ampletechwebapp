@@ -298,6 +298,10 @@ def add_WD():
 	Status = form.Status.data
 	form.Status.data = ''
 	our_wds =WD.query.order_by(WD.date_added)
+	if Shipping == "Domestic" and Height >= 71:
+		flash("Domestic Sipping Height Can't Be Over 72!!!")
+	if Shipping == "International" and Height >= 91:
+		flash("International Sipping Height Can't Be Over 90!!!")
 	return render_template("add_WD.html",
 						   form = form,
 						   Company_Name=Company_Name,
@@ -316,7 +320,8 @@ def add_WD():
 @app.route('/CompleteWD', methods=['GET','POST'])
 def CompleteWD():
 	#Grab all W&Ds from DB
-	WDs = WD.query.order_by(WD.date_added)
+	page = request.args.get('page',1, type=int)
+	WDs = WD.query.order_by(WD.date_added.desc()).paginate(page=page, per_page=10)
 	return render_template("CompleteWD.html", WDs=WDs)
 
 

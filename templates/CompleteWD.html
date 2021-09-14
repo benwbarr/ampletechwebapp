@@ -10,21 +10,16 @@
 </div></center></strong>
 <br/><br/>
 
-{% for WD in WDs %}
+{% for WD in WDs.items %}
     {% if WD.Status == 'Complete' %}
 
 
-<br/>
+
 
 <center><div id="bar" class="card-body"style="border: .5px solid Black; background-color: White; width: 85rem">
-
-
-
     <table id="testTable" class="table table-hover table-bordered border-dark" border="3">
         <tbody>
-
             <tr>
-
                 <td colspan="2"  class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>{{WD.Company_Name }}</td>
                 <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>SO - {{WD.SO }}</td>
                 <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>{{ WD.Shipping }}</td>
@@ -53,9 +48,6 @@
                  <td style="text-align: center;" contenteditable='false'>{{WD.Total_Weight}}</td>
                  <td style="text-align: center;" contenteditable='false'><a href="{{url_for('WD_update', id=WD.id)}}">{{WD.Status }}</a></td>
              </tr>
-
-
-
         </tbody>
 
     </table>
@@ -84,7 +76,21 @@
 
 {% endfor %}
 
-
+<center><div class="card" style="width: 15rem; height: 4.5rem">
+  <center><div class="card-body justify-content-center">
+{% for page_num in WDs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+        {% if WDs.page == page_num %}
+            <a class="btn btn-info mb-4" href="{{ url_for('CompleteWD', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+            <a class="btn btn-outline-info mb-4" href="{{ url_for('CompleteWD', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+{% else %}
+        ...
+    {% endif %}
+{% endfor %}
+  </div></center>
+</div></center>
 {% endblock %}
 
 
