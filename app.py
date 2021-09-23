@@ -11,6 +11,7 @@ import sys
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 from jinja2 import environment, filters
 sys.setrecursionlimit(2000)
 
@@ -27,7 +28,7 @@ app.config['SECRET_KEY'] = "super secret key"
 Bootstrap(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-
+app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
 
 
@@ -41,6 +42,21 @@ mysql.init_app(app)
 
 conn = mysql.connect()
 cursor = conn.cursor()
+
+
+class Users(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(200), nullable=False)
+	email = db.Column(db.String(120), nullable=False, unique=True)
+	date_added = db.Column(db.DateTime, default=datetime.utcnow)
+
+	def __repr__(self):
+		return '<Name %r>' % self.Name
+
+class UserForm(FlaskForm):
+	name = StringField("Name", validators=[DataRequired()])
+	email = StringField("Email", validators=[DataRequired()])
+	submit = SubmitField("Submit")
 
 
 class WD(db.Model):
@@ -321,7 +337,7 @@ def add_WD():
 def CompleteWD():
 	#Grab all W&Ds from DB
 	page = request.args.get('page',1, type=int)
-	WDs = WD.query.order_by(WD.date_added.desc()).paginate(page=page, per_page=10)
+	WDs = WD.query.order_by(WD.date_added.desc(), WD.SO.desc()).paginate(page=page, per_page=10)
 	return render_template("CompleteWD.html", WDs=WDs)
 
 
@@ -337,6 +353,7 @@ def search():
 					   (WD, WD, WD, WD, WD, WD, WD, WD, WD, WD, WD, WD))
         conn.commit()
         data = cursor.fetchall()
+
         # all in the search box will return all the tuples
         if len(data) == 0 and WD == 'all':
             cursor.execute("SELECT id, Company_Name, SO, Shipping, date, Pallet, Length, Width, Height, Weight, Total_Weight, Status from WD")
@@ -348,9 +365,7 @@ def search():
 
 
 @app.route('/')
-
 def index():
-
 	return render_template("index.html")
 
 
@@ -715,6 +730,26 @@ def EWCSPrint():
 		NEE=NEE,
 		NFM=NFM,
 		PREC=PREC)
+
+
+
+
+@app.route('/users/add', methods=['GET', 'POST'])
+def add_user():
+	name = None
+	form = UserForm()
+	if form.validate_on_submit():
+		user = Users.query.filter_by(email=form.email.data).first()
+		if user is None:
+			user = Users(name=form.name.data, email=form.email.data)
+			db.session.add(user)
+			db.session.commit()
+		name = form.name.data
+		form.name.data = ''
+		form.email.data = ''
+		flash("User Added")
+		our_users = Users.query.order_by(Users.date_added)
+	return render_template("add_user.html", form=form, name=name, our_users=our_users)
 
 
 

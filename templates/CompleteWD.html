@@ -14,85 +14,82 @@
     {% if WD.Status == 'Complete' %}
 
 
+            <center><div id="bar" class="card-body"style="border: .5px solid Black; background-color: White; width: 85rem">
+
+                <table id="testTable" class="table table-hover table-bordered border-dark" border="3" >
+                    <tbody>
+
+                        <tr>
+                            <td colspan="2"  class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>{{WD.Company_Name }}</td>
+                            <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>SO - {{WD.SO}}</td>
+                            <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>{{ WD.Shipping }}</td>
+                            <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'></td>
+                            <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>Date: {{ WD.date }}</td>
+                            <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;"></td>
+                        </tr>
+                        <tr>
+                            <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Pallet</td>
+                            <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Length</td>
+                            <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Width</td>
+                            <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Height</td>
+                            <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Weight</td>
+                            <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Total Weight</td>
+                            <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Status</td>
+                        </tr>
+                         <tr>
+
+                            <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center;" contenteditable='false'>{{WD.Pallet }}</td>
+                            <td style="text-align: center;" contenteditable='false'>{{WD.Length }}</td>
+                            <td style="text-align: center;" contenteditable='false'>{{WD.Width }}</td>
+                            <td style="text-align: center;" contenteditable='false'>{{WD.Height }}</td>
+                            <td style="text-align: center;" contenteditable='false'>{{WD.Weight }}</td>
+                             <td style="text-align: center;" contenteditable='false'>{{WD.Total_Weight}}</td>
+                             <td style="text-align: center;" contenteditable='false'><a href="{{url_for('WD_update', id=WD.id)}}">{{WD.Status }}</a></td>
+                         </tr>
 
 
-<center><div id="bar" class="card-body"style="border: .5px solid Black; background-color: White; width: 85rem">
-    <table id="testTable" class="table table-hover table-bordered border-dark" border="3">
-        <tbody>
-            <tr>
-                <td colspan="2"  class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>{{WD.Company_Name }}</td>
-                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>SO - {{WD.SO }}</td>
-                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>{{ WD.Shipping }}</td>
-                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'></td>
-                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>Date: {{ WD.date }}</td>
-                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;"></td>
 
-            </tr>
-            <tr>
+                    </tbody>
 
-                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Pallet</td>
-                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Length</td>
-                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Width</td>
-                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Height</td>
-                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Weight</td>
-                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Total Weight</td>
-                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Status</td>
-            </tr>
-             <tr>
+                </table>
+                <div class="container">
+              <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+                      <div class="row">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4 offset-md-4" style="padding-left: 280px;">
+                            <right><a href="{{url_for('delete', id=WD.id)}}" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</a></right>
 
-                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center;" contenteditable='false'>{{WD.Pallet }}</td>
-                <td style="text-align: center;" contenteditable='false'>{{WD.Length }}</td>
-                <td style="text-align: center;" contenteditable='false'>{{WD.Width }}</td>
-                <td style="text-align: center;" contenteditable='false'>{{WD.Height }}</td>
-                <td style="text-align: center;" contenteditable='false'>{{WD.Weight }}</td>
-                 <td style="text-align: center;" contenteditable='false'>{{WD.Total_Weight}}</td>
-                 <td style="text-align: center;" contenteditable='false'><a href="{{url_for('WD_update', id=WD.id)}}">{{WD.Status }}</a></td>
-             </tr>
-        </tbody>
+                        </div>
+                      </div>
+                </div>
+                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Delete W&D</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Are you sure you want to delete this W&D?
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <right><a href="{{url_for('delete', id=WD.id)}}" class="btn btn-outline-danger me-md-3 btn-sm">Delete</a></right>
+                      </div>
 
-    </table>
+                    </div>
+                  </div>
+                </div>
 
-    <div class="container">
-  <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-          <div class="row">
-            <div class="col-md-4">
-            </div>
-            <div class="col-md-4 offset-md-4" style="padding-left: 280px;">
-                <right><a href="{{url_for('delete', id=WD.id)}}" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</a></right>
-
-            </div>
-          </div>
-    </div>
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel">Delete W&D</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Are you sure you want to delete this W&D?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <right><a href="{{url_for('delete', id=WD.id)}}" class="btn btn-outline-danger me-md-3 btn-sm">Delete</a></right>
-          </div>
-
-        </div>
-      </div>
-    </div>
 </div></center>
 
 <br/>
 
 
-    {% else %}
-
-
-{% endif %}
-
-
+    {% endif %}
 {% endfor %}
+
 
 <center><div class="card" style="width: 15rem; height: 4.5rem">
   <center><div class="card-body justify-content-center">

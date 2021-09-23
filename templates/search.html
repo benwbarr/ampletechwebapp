@@ -27,7 +27,7 @@
         <form class="d-flex" method="post" action=""
          style="margin:auto;max-width:600px">
             <input class="form-control me-2" type="text" placeholder="Search" name="book">
-            <button  class="btn btn-outline-success" type="submit"><i class="fa fa-search"></i>Search
+            <button  class="btn btn-primary" type="submit"><i class="fa fa-search"></i>Search
             </button>
         </form>
         </div>
@@ -36,12 +36,9 @@
         <center>
         {% for item in data %}
 
-        <center><div id="bar" class="card-body"style="border: .5px solid Black; background-color: White; width: 85rem">
-            <table id="testTable" class="table table-hover table-bordered border-dark" border="3">
-        <tbody>
-
+        <center><div id="bar" class="card-body"style="background-color: White; width: 85rem;">
+            <table id="testTable" class="table table-hover table-bordered border-dark" border="3" style="margin-bottom: -5px;margin-top: -10px;">
             <tr>
-
                 <td colspan="2"  class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>{{item[1] }}</td>
                 <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>SO - {{item[2] }}</td>
                 <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>{{item[3] }}</td>
@@ -69,24 +66,62 @@
                  <td style="text-align: center;" contenteditable='false'>{{item[10] }}</td>
                 <td style="text-align: center;" contenteditable='false'><a href="{{url_for('WD_update', id=item.0)}}">{{item[11] }}</a></td>
              </tr>
-
             </table>
-                <div class="container">
-  <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-          <div class="row">
-            <div class="col-md-4">
-            </div>
-            <div class="col-md-4 offset-md-4" style="padding-left: 280px;">
-                <right><a href="{{url_for('delete', id=item.0)}}" class="btn btn-outline-danger me-md-3 btn-sm">Delete</a></right>
+        </div></center>
+            <br/>
+{% endfor %}
 
-            </div>
-          </div>
-    </div>
-</div></center>
-                   </div>
-    </div>
+            {% for item in data  %}
+                 {% if item.11 == 'Complete' %}
+                 {% if loop.index >= 2 %}{% break %}{% endif %}
+
+          <center><div id="bart" class="card-body"style="background-color: White; width: 85rem;">
+            <table id="totalTable" class="table table-hover table-bordered border-dark" border="3" style="margin-bottom: -0px;margin-top: -10px;">
+            <tr>
+                <td colspan="2"  class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>{{item[1] }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>SO - {{item[2] }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>{{item[3] }}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>{{item[11]}}</td>
+                <td class="table-success table-bordered border-dark" border="3" style="text-align: center; background-color:CadetBlue;" contenteditable='false'>{{item[4] }}</td>
+            </tr>
+            <tr>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Pallet</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Length</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Width</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Height</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Weight</td>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center; background-color:Gainsboro;" contenteditable='false'>Total Weight</td>
+            </tr>
+                {% for item in data|unique %}
+            <tr>
+                <td class="table-secondary table-bordered border-dark" border="3" style="text-align: center;" contenteditable='false'>{{item[5]  }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{item[6] }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{item[7] }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{item[8] }}</td>
+                <td style="text-align: center;" contenteditable='false'>{{item[9] }}</td>
+                 <td style="text-align: center;" contenteditable='false'>{{item[10] }}</td>
+
+                {% endfor %}
+            </table>
             </div></center>
-        {% endfor %}
+{% endif %}
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
      <!-- Optional JavaScript; choose one of the two! -->
