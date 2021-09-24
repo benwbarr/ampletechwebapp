@@ -48,7 +48,6 @@ class Users(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(200), nullable=False)
 	email = db.Column(db.String(120), nullable=False, unique=True)
-	date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
 	def __repr__(self):
 		return '<Name %r>' % self.Name
@@ -95,6 +94,33 @@ class WDForm(FlaskForm):
 	date = DateField("Date", validators=[DataRequired()])
 	Submit = SubmitField("Submit")
 
+
+@app.route('/User_update/<int:id>', methods=['GET', 'POST'])
+def User_update(id):
+	form= UserForm()
+	name_to_update = Users.query.get_or_404(id)
+	if request.method == "POST":
+		name_to_update.name = request.form['name']
+		name_to_update.email = request.form['email']
+		try:
+			db.session.commit()
+			flash("User Updated")
+			return render_template("User_update.html",
+								   form = form,
+								   name_to_update = name_to_update)
+		except:
+			flash("Error User Not Updated")
+			return render_template("User_update.html",
+								   form=form,
+								   name_to_update=name_to_update)
+	else:
+		return render_template("User_update.html",
+							   form=form,
+							   name_to_update=name_to_update)
+
+
+
+@app.route('/delete/<int:id>')
 
 
 @app.route('/WD_update/<int:id>', methods=['GET', 'POST'])
@@ -748,7 +774,7 @@ def add_user():
 		form.name.data = ''
 		form.email.data = ''
 		flash("User Added")
-	our_users = Users.query.order_by(Users.date_added)
+	our_users = Users.query.order_by()
 	return render_template("add_user.html", form=form, name=name, our_users = our_users)
 
 

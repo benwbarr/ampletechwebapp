@@ -3,11 +3,17 @@
 {% block content %}
 
 {% if name %}
+<div class="card">
+    <div class="card-body"style="border: .5px solid Black">
     <h1>User Added!!</h1>
     <br/>
 {% for our_user in our_users %}
-        {{ our_user.id }}.  {{our_user.name}} - {{ our_user.email }}<br/>
+        <tr>
+            <td>{{ our_user.id }}. <a href="{{url_for('User_update', id=our_user.id)}}">  {{our_user.name}}</a> - {{ our_user.email }}</td>
+        </tr>
 {% endfor %}
+    </div>
+</div>
     <br/><br/>
 
 
@@ -40,7 +46,13 @@
         </form>
 <br/><br/><br/>
 {% for our_user in our_users %}
-        {{ our_user.id }}.  {{our_user.name}} - {{ our_user.email }}<br/>
+        <table class="table table-striped">
+        <tbody>
+            <tr>
+            <td>{{ our_user.id }}. <a href="{{url_for('User_update', id=our_user.id)}}">  {{our_user.name}}</a> - {{ our_user.email }}</td>
+            </tr>
+        </tbody>
+        </table>
 {% endfor %}
 
     </div>
