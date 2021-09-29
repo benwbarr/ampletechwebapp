@@ -14,57 +14,51 @@
     {% endwith %}
 </div>
 
-{% if name %}
+
+{% if email %}
 <div class="card">
     <div class="card-body"style="border: .5px solid Black">
-    <h1>Update User</h1>
-    <br/>
-{% for our_user in our_users %}
-        {{ our_user.id }}.  {{our_user.name}} - {{ our_user.email }}<br/>
-{% endfor %}
+        <h1>Email: {{ email }}</h1>
+        <h1>Password: {{ password }}</h1>
+        <br/>
+        <h2> I found this info</h2>
+        Name: {{pw_to_check.name}}<br/>
+        Email: {{pw_to_check.email}}<br/>
+        PW: {{pw_to_check.password_hash}}<br/>
+        Passed: {{ passed }}
     </div>
 </div>
-    <br/><br/>
-
 
 {% else %}
 <div class="card">
     <div class="card-body"style="border: .5px solid Black">
-        <h1>Update User:</h1>
+        <h1>What's Your Email and Password?</h1>
         <br/>
-        <form action="/User_update/{{name_to_update.id}}" method="POST">
+        <form method="POST">
             {{ form.hidden_tag() }}
-
-            {{ form.name.label(
-            class="form-label") }}
-
-            {{ form.name(
-            class="form-control", value=name_to_update.name) }}<br/>
-
-            {{ form.username.label(
-            class="form-label") }}
-
-            {{ form.username(
-            class="form-control", value=name_to_update.username) }}<br/>
 
             {{ form.email.label(
             class="form-label") }}
 
             {{ form.email(
-            class="form-control", value=name_to_update.email) }}
+            class="form-control") }}
+            <br/>
+
+            {{ form.password_hash.label(
+            class="form-label") }}
+
+            {{ form.password_hash(
+            class="form-control") }}
 
             <br/>
 
             {{ form.submit(class="btn
-            btn-primary") }}
+            btn-secondary") }}
             <br/>
 
         </form>
-         </div>
+    </div>
 </div>
-<br/><br/><br/>
-
-
 {% endif %}
 
 {% endblock %}

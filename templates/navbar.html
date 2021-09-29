@@ -34,9 +34,21 @@
               <li><a class="nav-link" href="{{url_for('search') }}">Search W&D</a></strong></li></li>
            </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{url_for('add_user')}}">Add User</a>
-        </li>
+        {% if current_user.is_authenticated %}
+          <li class="nav-item">
+              <a class="nav-link" href="{{url_for('dashboard')}}">Dashboard</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+              <a class="nav-link" href="{{url_for('add_user')}}">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{url_for('login')}}">Login</a>
+          </li>
+        {% endif %}
         </ul>
       </div>
   </div>

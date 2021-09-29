@@ -1,0 +1,85 @@
+{% extends 'base.html'  %}
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
+
+
+
+    <!-- Bootstrap core CSS -->
+<link href="/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+    <!-- Favicons -->
+<link rel="apple-touch-icon" href="/docs/5.1/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/docs/5.1/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/docs/5.1/assets/img/favicons/manifest.json">
+<link rel="mask-icon" href="/docs/5.1/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
+<link rel="icon" href="/docs/5.1/assets/img/favicons/favicon.ico">
+<meta name="theme-color" content="#7952b3">
+
+
+
+{% block content %}
+<div clas="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <span>{{ message }}</span>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif%}
+    {% endwith %}
+</div>
+
+
+    <br/>
+   <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+<center><img class="mb-4" src="static/images/small.png" alt="" width="300" height="270"><br/></center>
+<center><div class="card" style="width: 500px">
+    <center><div class="card-body">
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+        <br/>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            {{ form.username.label(
+            class="form-label") }}
+
+            {{ form.username(
+            class="form-control form-control-lg") }}
+<br/>
+
+            {{ form.password.label(
+            class="form-label") }}
+
+            {{ form.password(
+            class="form-control form-control-lg") }}
+
+            <br/>
+
+            {{ form.submit(class="btn
+            btn-primary btn-lg") }}
+            <br/>
+
+        </form>
+    </div></center>
+</div></center>
+
+
+
+
+{% endblock %}
