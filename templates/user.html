@@ -2,6 +2,40 @@
 
 {% block content %}
 
-    <h1>Hello {{ user_name|capitalize }}</h1>
+
+{% if current_user.department == "IT" or current_user.department == "HR" or current_user.department == "Management" %}
+<div class="card">
+            <div class="card-body"style="border: .5px solid Black">
+                <h1>Admin Page</h1>
+            </div>
+</div>
+    {% for our_user in our_users %}
+        <div class="card">
+            <div class="card-body"style="border: .5px solid Black">
+                <table class="table table-hover table-border table-striped">
+                        <tr>
+                            ID: {{ our_user.id }}</br>
+                            Name:{{our_user.name}}</a> </br>
+                            User Name: {{ our_user.username  }} </br>
+                            Email: {{ our_user.email }}</br>
+                            Department: {{ our_user.department }}</br>
+                            PW: {{ our_user.password_hash  }}
+                        </tr>
+                    </table>
+                        <a class="btn btn-info" style="padding: 10px; margin: 10px" href="{{url_for('User_update', id=our_user.id)}}" role="button">Updated</a>
+                        <a class="btn btn-danger" style="padding: 10px; margin: 10px" href="{{url_for('delete_user', id=our_user.id)}}" role="button">Delete</a>
+                </div>
+        </div>
+    {% endfor %}
+{% else %}
+<div class="card">
+    <div class="card-body"style="border: .5px solid Black">
+        <h1>You Do Not Have Access To This Page!</h1>
+    </div>
+</div>
+
+
+
+{% endif %}
 
 {% endblock %}

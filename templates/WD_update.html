@@ -50,17 +50,57 @@
                 {{ form.SO(style="text-align: center",class="form-control form-control-lg",value=WD_to_update.SO) }}
                 </div>
                 </div></strong>
-                <strong><div style="border: .5px solid Black; padding: 10px;">
+                <strong><div class="row g-3"  style="border: .5px solid Black; padding: 10px;">
                  <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
-                {{ form.Status.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.Status(class="form-control form-control-lg",value=WD_to_update.Status) }}
+                {{ form.Pallet.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Pallet(class="form-control form-control-lg",value=WD_to_update.Status) }}
                 </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Shipping.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Shipping(style="text-align: center",class="form-control form-control-lg",value=WD_to_update.Shipping) }}
+                </div>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;  background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Length.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Length(style="text-align: center",class="form-control form-control-lg",value=WD_to_update.Length) }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Width.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Width(style="text-align: center",class="form-control form-control-lg",value=WD_to_update.Width) }}
+                </div>
+                </div></strong>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Height.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Height(style="text-align: center",class="form-control form-control-lg",value=WD_to_update.Height) }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Weight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Weight(style="text-align: center",class="form-control form-control-lg",value=WD_to_update.Weight) }}
+                </div>
+                </div></strong>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;  background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Total_Weight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Total_Weight(style="text-align: center",class="form-control form-control-lg",value=WD_to_update.Total_Weight) }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Status.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Status(style="text-align: center",class="form-control form-control-lg",value=WD_to_update.Status) }}
+                </div>
+                </div></strong>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;  background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Date.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Date(style="text-align: center",class="form-datetime form-datetime-lg",value=WD_to_update.Date) }}
+                </div>
+                </div></strong>
                     <div style="  padding: 5px">
                 </div>
                 </div></strong>
 
                 <br/>
-                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;  background-color: Gainsboro">
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;">
                  <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
                 {{ form.Submit(class="btn btn-outline-primary btn-lg")}}
                   </div>

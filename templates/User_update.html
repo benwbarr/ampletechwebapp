@@ -14,24 +14,14 @@
     {% endwith %}
 </div>
 
-{% if name %}
-<div class="card">
-    <div class="card-body"style="border: .5px solid Black">
-    <h1>Update User</h1>
-    <br/>
-{% for our_user in our_users %}
-        {{ our_user.id }}.  {{our_user.name}} - {{ our_user.email }}<br/>
-{% endfor %}
-    </div>
-</div>
-    <br/><br/>
+{% if id == current_user.id %}
 
 
-{% else %}
 <div class="card">
     <div class="card-body"style="border: .5px solid Black">
         <h1>Update User:</h1>
         <br/>
+
         <form action="/User_update/{{name_to_update.id}}" method="POST">
             {{ form.hidden_tag() }}
 
@@ -51,7 +41,8 @@
             class="form-label") }}
 
             {{ form.email(
-            class="form-control", value=name_to_update.email) }}
+            class="form-control", value=name_to_update.email) }}<br/>
+
 
             <br/>
 
@@ -64,7 +55,21 @@
 </div>
 <br/><br/><br/>
 
-
+{% else %}
+<div clas="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <span>Must Be Your User Account To Edit!</span>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif%}
+    {% endwith %}
+</div>
+<h2>Access Denied!</h2>
+<p>You can't access another users account</p>
 {% endif %}
 
 {% endblock %}

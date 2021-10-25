@@ -1,19 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_bootstrap import Bootstrap
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, SelectField, IntegerField, DateField, validators, BooleanField, DateTimeField, PasswordField, ValidationError
+from wtforms.fields.html5 import DateField, DateTimeField
+from wtforms.validators import DataRequired, EqualTo, Length
+from flask_mysqldb import MySQL, MySQLdb
 from flaskext.mysql import MySQL
+import pymysql
 import sys
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from jinja2 import environment, filters
 from flask_login import UserMixin, login_user, login_manager, login_required, logout_user, current_user, LoginManager
-from flask_mail import Mail, Message
-import os
-from webforms import (LoginForm, UserForm, WDForm, PostAuditDismantleForm, WholesaleEWasteReceivingForm,
-					WholesaleClientShippingForm, EWasteClientShippingForm, PasswordForm, RequestResetForm, ResetPasswordForm)
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 sys.setrecursionlimit(2000)
-
 
 
 
@@ -29,21 +30,13 @@ Bootstrap(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
-app.config['MAIL_SERVER'] = 'smtp.sendgrid.net'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'apikey'
-app.config['MAIL_PASSWORD'] = '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'
-app.config['MYSQL_USERNAME'] = 'apikey'
-app.config['MYSQL_PASSWORD'] = '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'
-mail = Mail(app)
+
 
 
 app.config['MYSQL_DATABASE_USER'] = 'benwebwd'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'w8TBX&MsZvC&F92Qc9Fa9c'
 app.config['MYSQL_DATABASE_DB'] = 'wd'
 app.config['MYSQL_DATABASE_HOST'] = '10.104.1.52'
-mail = Mail(app)
 
 mysql = MySQL()
 mysql.init_app(app)
@@ -62,27 +55,17 @@ def load_user(user_id):
 
 
 
+class LoginForm(FlaskForm):
+	username = StringField("Username", validators=[DataRequired()])
+	password= PasswordField("Password", validators=[DataRequired()])
+	submit = SubmitField("Submit")
+
 class Users(db.Model, UserMixin):
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(20), nullable=False, unique=True)
 	name = db.Column(db.String(200), nullable=False)
 	email = db.Column(db.String(120), nullable=False, unique=True)
-	department = db.Column(db.String(200), nullable=False)
-	level = db.Column(db.String(50), nullable=True)
 	password_hash = db.Column(db.String(128))
-
-	def get_reset_token(self, expires_sec=1800):
-		s = Serializer(app.config['SECRET_KEY'], expires_sec)
-		return s.dumps({'user_id': self.id}).decode('utf-8')
-
-	@staticmethod
-	def verify_reset_token(token):
-		s = Serializer(app.config['SECRET_KEY'])
-		try:
-			user_id = s.loads(token)['user_id']
-		except:
-			return None
-		return Users.query.get(user_id)
 
 	@property
 	def password(self):
@@ -98,6 +81,13 @@ class Users(db.Model, UserMixin):
 	def __repr__(self):
 		return '<Name %r>' % self.Name
 
+class UserForm(FlaskForm):
+	name = StringField("Name", validators=[DataRequired()])
+	username = StringField("User Name", validators=[DataRequired()])
+	email = StringField("Email", validators=[DataRequired()])
+	password_hash = PasswordField('Password', validators=[DataRequired(), EqualTo('password_hash2',message='Passwords Must Match!')])
+	password_hash2 = PasswordField('Confirm Password',validators=[DataRequired()])
+	submit = SubmitField("Submit")
 
 
 class WD(db.Model):
@@ -118,6 +108,23 @@ class WD(db.Model):
 	#Create A String
 	def __repr__(self):
 		return 'WD %r>' % self.Company_Name
+
+
+
+#create form class
+class WDForm(FlaskForm):
+	Company_Name = StringField("Company Name", validators=[DataRequired()])
+	SO = StringField("Sales Order", validators=[DataRequired()])
+	Pallet = IntegerField("Pallet", validators=[DataRequired()])
+	Shipping = SelectField("Shipping", choices=[('Domestic', 'Domestic'), ('International', 'International')] ,validators=[DataRequired()])
+	Length = IntegerField("Length", validators=[DataRequired()])
+	Width = IntegerField("Width", validators=[DataRequired()])
+	Height = IntegerField("Height", validators=[DataRequired()])
+	Weight = IntegerField("Weight", validators=[DataRequired()])
+	Total_Weight = IntegerField("Total Weight", validators=[DataRequired()])
+	Status = SelectField("Status", choices=[('Not Complete', 'Not Complete'), ('Complete', 'Complete')] ,validators=[DataRequired()])
+	date = DateField("Date", validators=[DataRequired()])
+	Submit = SubmitField("Submit")
 
 
 
@@ -158,7 +165,6 @@ def dashboard():
 
 
 @app.route('/User_update/<int:id>', methods=['GET', 'POST'])
-@login_required
 def User_update(id):
 	form= UserForm()
 	name_to_update = Users.query.get_or_404(id)
@@ -169,22 +175,18 @@ def User_update(id):
 		try:
 			db.session.commit()
 			flash("User Updated")
-			return render_template("dashboard.html",
+			return render_template("User_update.html",
 								   form = form,
-								   name_to_update = name_to_update,
-								   id=id)
+								   name_to_update = name_to_update)
 		except:
 			flash("Error User Not Updated")
 			return render_template("User_update.html",
 								   form=form,
-								   name_to_update=name_to_update,
-								   id=id)
+								   name_to_update=name_to_update)
 	else:
 		return render_template("User_update.html",
 							   form=form,
-							   name_to_update=name_to_update,
-							   id=id)
-
+							   name_to_update=name_to_update)
 
 
 
@@ -196,101 +198,113 @@ def User_update(id):
 def WD_update(id):
 	Company_Name = None
 	SO = None
-	Pallet = None
-	Shipping = None
-	Length = None
-	Width = None
-	Height = None
-	Weight = None,
-	Total_Weight = None
 	Status = None
-	Date = None
 	form = WDForm()
 	WD_to_update = WD.query.get_or_404(id)
 	if form.validate_on_submit():
 		Company_Name = form.Company_Name.data
 		SO = form.SO.data
-		Pallet = form.Pallet.data
-		Shipping = form.Shipping.data
-		Length = form.Length.data
-		Width = form.Width.data
-		Height = form.Height.data
-		Weight = form.Weight.data
-		Total_Weight = form.Total_Weigh.data
 		Status = form.Status.data
-		Date = form.Date.data
 		form.Company_Name.data = ""
 		form.SO.data = ""
 		form.Status.data = ""
-		form.Pallet = ""
-		form.Shipping = ""
-		form.Length = ""
-		form.Width = ""
-		form.Height = ""
-		form.Total_Weigh = ""
-		form.Status = ""
-		form.Date = ""
 	if request.method == "POST":
 		WD_to_update.Company_Name = request.form['Company_Name']
 		WD_to_update.SO = request.form['SO']
-		WD_to_update.Pallet = request.form['Pallet']
-		WD_to_update.Shipping = request.form['Shipping']
-		WD_to_update.Length = request.form['Length']
-		WD_to_update.Width = request.form['Width']
-		WD_to_update.Height = request.form['Height']
-		WD_to_update.Total_Weight = request.form['Total_Weight']
 		WD_to_update.Status = request.form['Status']
-		WD_to_update.Date = request.form['Date']
 		try:
 			db.session.commit()
 			flash(" Updated Successfuly!")
 			return render_template("WD_update.html",
-				form=form,
-				Company_Name=Company_Name,
-				SO = SO,
-				Pallet= Pallet,
-				Shipping = Shipping,
-				Length = Length,
-				Width = Width,
-				Height = Height,
-				Weight = Weight,
-				Total_Weight = Total_Weight,
-				Status= Status,
-				Date= Date,
-				WD_to_update = WD_to_update)
+			   form=form,
+			   Company_Name=Company_Name,
+			   SO = SO,
+				Status=Status,
+			   WD_to_update = WD_to_update)
 
 		except:
 			flash("ERROR!! W&D Not Updated")
 			return render_template("WD_update.html",
-				form=form,
-				Company_Name=Company_Name,
-				SO=SO,
-				Pallet=Pallet,
-				Shipping=Shipping,
-				Length=Length,
-				Width=Width,
-				Height=Height,
-				Weight=Weight,
-				Total_Weight=Total_Weight,
-				Status=Status,
-				Date=Date,
-				WD_to_update=WD_to_update)
+			   form=form,
+			   Company_Name=Company_Name,
+			   Status=Status,
+			   WD_to_update=WD_to_update)
 
 	else:
 		return render_template("WD_update.html",
 			   form=form,
 			   Company_Name=Company_Name,
 			   SO=SO,
-			   Pallet=Pallet,
-			   Shipping=Shipping,
-			   Length=Length,
-			   Width=Width,
-			   Height=Height,
-			   Weight=Weight,
-			   Total_Weight=Total_Weight,
 			   Status=Status,
-			   Date=Date,
 			   WD_to_update=WD_to_update)
+
+class PostAuditDismantleForm(FlaskForm):
+	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
+	Commodity = StringField("Commodity", validators=[DataRequired()])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Submit = SubmitField("Print")
+
+#create form class
+class WholesaleEWasteReceivingForm(FlaskForm):
+	Client = StringField("Client", validators=[DataRequired()])
+	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
+	Weight = IntegerField("Weight", validators=[DataRequired()])
+	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
+	Submit = SubmitField("Print")
+
+class WholesaleClientShippingForm(FlaskForm):
+	Client = StringField("Client", validators=[DataRequired()])
+	SoNumber = IntegerField("SO Number", validators=[DataRequired()])
+	Weight = IntegerField("Weight", validators=[DataRequired()])
+	Dimms = StringField("Dimms", validators=[DataRequired()])
+	Dimms2 = StringField("Dimms", validators=[DataRequired()])
+	Dimms3 = StringField("Dimms", validators=[DataRequired()])
+	CurrentPallet = StringField("Current Pallet", validators=[DataRequired()])
+	TotalPallets = StringField("Total Pallets", validators=[DataRequired()])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	QA = SelectField("QA Checked By", choices=[('Adan J', 'Adan J'), ('Corey G', 'Corey G'), ('Jesus G', 'Jesus G'), ('Scott G', 'Scott G'),('Mike V', 'Mike V')])
+	UECM = BooleanField("Unevaluated Equipment, Components & Materials")
+	UDM = BooleanField("Unsanitized Devices/Media")
+	ECTR = BooleanField("Equipment/Components for Test & Repair")
+	FMCEC = BooleanField("FM Containing Equipment/Components")
+	FM = BooleanField("Focus materials")
+	NECUO = BooleanField("New Equipment/Components in Unopened, Original OEM Packaging")
+	NEE = BooleanField("Non-Electronics Equipment")
+	NFM = BooleanField("Non-focus materials")
+	PREC = BooleanField("Planned Return Equipment/Components")
+	Submit = SubmitField("Print")
+
+
+class EWasteClientShippingForm(FlaskForm):
+	Client = StringField("Client", validators=[DataRequired()])
+	SoNumber = IntegerField("SO Number", validators=[DataRequired()])
+	Weight = IntegerField("Weight", validators=[DataRequired()])
+	Dimms = StringField("Dimms", validators=[DataRequired()])
+	Dimms2 = StringField("Dimms", validators=[DataRequired()])
+	Dimms3 = StringField("Dimms", validators=[DataRequired()])
+	Commodity = StringField("Commodity", validators=[DataRequired()])
+	Category = SelectField("Category", choices=[('C0', 'C0'), ('C1', 'C1'), ('C2', 'C2')])
+	CurrentPallet = StringField("Current Pallet", validators=[DataRequired()])
+	TotalPallets = StringField("Total Pallets", validators=[DataRequired()])
+	Evaluated = SelectField("Evaluated", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	QA = SelectField("QA Checked By", choices=[('Adan J', 'Adan J'), ('Corey G', 'Corey G'), ('Jesus G', 'Jesus G'), ('Scott G', 'Scott G'),('Mike V', 'Mike V')])
+	UECM = BooleanField("Unevaluated Equipment, Components & Materials")
+	UDM = BooleanField("Unsanitized Devices/Media")
+	ECTR = BooleanField("Equipment/Components for Test & Repair")
+	FMCEC = BooleanField("FM Containing Equipment/Components")
+	FM = BooleanField("Focus materials")
+	NECUO = BooleanField("New Equipment/Components in Unopened, Original OEM Packaging")
+	NEE = BooleanField("Non-Electronics Equipment")
+	NFM = BooleanField("Non-focus materials")
+	PREC = BooleanField("Planned Return Equipment/Components")
+	Submit = SubmitField("Print")
+
+
+class PasswordForm(FlaskForm):
+	email = StringField("What's Your Email?", validators=[DataRequired()])
+	password_hash = PasswordField("What's Your Password?", validators=[DataRequired()])
+	submit = SubmitField("Submit")
 
 
 @app.route('/delete/<int:id>')
@@ -467,7 +481,6 @@ def PostAuditDismantle():
 	PoNumber = None
 	Commodity = None
 	Data = None
-	Date = None
 	form = PostAuditDismantleForm()
 	#Validate Form
 	if form.validate_on_submit():
@@ -477,15 +490,12 @@ def PostAuditDismantle():
 		form.Commodity.data = ""
 		Data = form.Data.data
 		form.Data.data = ""
-		Date = form.Date.data
-		form.Data.data = ""
 		return redirect(url_for('PostAuditDismantle'))
 
 	return render_template("PostAuditDismantle.html",
 		PoNumber = PoNumber,
 		Commodity = Commodity,
-		Data = Data,
-		Date = Date,
+		Date = Data,
 		form = form)
 
 @app.route('/PADPrint', methods= ["POST"])
@@ -494,13 +504,11 @@ def PADPrint():
 	PoNumber = request.form.get("PoNumber")
 	Commodity = request.form.get("Commodity")
 	Data = request.form.get("Data")
-	Date = request.form.get("Date")
 
 	return render_template("PADPrint.html",
 		PoNumber=PoNumber,
 		Commodity=Commodity,
-		Data=Data,
-		Date=Date)
+		Data=Data)
 
 
 
@@ -570,7 +578,6 @@ def  WholesaleClientShipping():
 	NEE = None
 	NFM = None
 	PREC = None
-	Date = None
 	form = WholesaleClientShippingForm()
 	#Validate Form
 	if form.validate_on_submit():
@@ -612,8 +619,6 @@ def  WholesaleClientShipping():
 		form.NFM.data = ''
 		PREC = form.PREC.data
 		form.PREC.data = ''
-		Date = form.Date.data
-		form.Date.data = ''
 
 
 	return render_template("WholesaleClientShipping.html",
@@ -636,7 +641,6 @@ def  WholesaleClientShipping():
 		NEE =NEE,
 		NFM =NFM,
 		PREC =PREC,
-		Date=Date,
 		form =form)
 
 @app.route('/WCSPrint', methods= ["POST"])
@@ -661,7 +665,6 @@ def WCSPrint():
 	NEE = request.form.get("NEE")
 	NFM = request.form.get("NFM")
 	PREC = request.form.get("PREC")
-	Date = request.form.get("Date")
 
 	return render_template("WCSPrint.html",
 		Client =Client,
@@ -682,8 +685,7 @@ def WCSPrint():
 		NECUO=NECUO,
 		NEE=NEE,
 		NFM=NFM,
-		PREC=PREC,
-		Date=Date)
+		PREC=PREC)
 
 @app.route('/EWasteClientShipping ', methods=['GET', 'POST'])
 @login_required
@@ -710,7 +712,6 @@ def  EWasteClientShipping():
 	NEE = None
 	NFM = None
 	PREC = None
-	Date = None
 	form = EWasteClientShippingForm()
 	#Validate Form
 	if form.validate_on_submit():
@@ -758,8 +759,6 @@ def  EWasteClientShipping():
 		form.NFM.data = ''
 		PREC = form.PREC.data
 		form.PREC.data = ''
-		Date = form.Date.data
-		form.Date.data = ''
 
 
 	return render_template("EWasteClientShipping.html",
@@ -786,7 +785,6 @@ def  EWasteClientShipping():
 		NEE =NEE,
 		NFM =NFM,
 		PREC =PREC,
-		Date=Date,
 		form =form)
 
 @app.route('/EWCSPrint', methods= ["POST"])
@@ -814,7 +812,6 @@ def EWCSPrint():
 	NEE = request.form.get("NEE")
 	NFM = request.form.get("NFM")
 	PREC = request.form.get("PREC")
-	Date = request.form.get("Date")
 
 	return render_template("EWCSPrint.html",
 		Client =Client,
@@ -838,8 +835,7 @@ def EWCSPrint():
 		NECUO=NECUO,
 		NEE=NEE,
 		NFM=NFM,
-		PREC=PREC,
-		Date=Date)
+		PREC=PREC)
 
 
 
@@ -852,43 +848,18 @@ def add_user():
 		user = Users.query.filter_by(email=form.email.data).first()
 		if user is None:
 			hashed_pw = generate_password_hash(form.password_hash.data, "sha256")
-			user = Users(username =form.username.data, name=form.name.data, email=form.email.data, department=form.department.data,  password_hash=hashed_pw)
+			user = Users(username =form.username.data, name=form.name.data, email=form.email.data, password_hash=hashed_pw)
 			db.session.add(user)
 			db.session.commit()
 		name = form.name.data
 		form.name.data = ''
 		form.username.data = ''
 		form.email.data = ''
-		form.department.data = ''
 		form.password_hash.data = ''
 
 		flash("User Added")
 	our_users = Users.query.order_by()
 	return render_template("add_user.html", form=form, name=name, our_users = our_users)
-
-
-@app.route('/user', methods=['GET', 'POST'])
-def user():
-	name = None
-	form = UserForm()
-	if form.validate_on_submit():
-		user = Users.query.filter_by(email=form.email.data).first()
-		if user is None:
-			hashed_pw = generate_password_hash(form.password_hash.data, "sha256")
-			user = Users(username=form.username.data, name=form.name.data, email=form.email.data,
-						 department=form.department.data, password_hash=hashed_pw)
-			db.session.add(user)
-			db.session.commit()
-		name = form.name.data
-		form.name.data = ''
-		form.username.data = ''
-		form.email.data = ''
-		form.department.data = ''
-		form.password_hash.data = ''
-
-		flash("User Added")
-	our_users = Users.query.order_by()
-	return render_template("user.html", form=form, name=name, our_users=our_users)
 
 @app.route('/delete_user/<int:id>')
 def delete_user(id):
@@ -937,44 +908,6 @@ def test_pw():
 						   passed = passed,
 						   form = form)
 
-def send_reset_email(Users):
-	token = Users.get_reset_token()
-	msg = Message('Password Reset Request', sender='noreply@ampletechrefresh.com', recipients=[Users.email])
-	msg.body = f''' To reset your password, visit the following link:
-{url_for('reset_token', token=token, _external=True)}
-
-If you did not make this request then ignore this email.
-'''
-	mail.send(msg)
-
-@app.route("/reset_password", methods=['GET', 'POST'])
-def reset_request():
-	if current_user.is_authenticated:
-		return redirect(url_for('index'))
-	form = RequestResetForm()
-	if form.validate_on_submit():
-		user = Users.query.filter_by(email=form.email.data).first()
-		send_reset_email(user)
-		flash('An email has been sent with instructions to reset your password.', 'info')
-		return redirect(url_for('login'))
-	return render_template('reset_request.html', title="Reset Password",form=form)
-
-@app.route("/reset_password/<token>", methods=['GET', 'POST'])
-def reset_token(token):
-	if current_user.is_authenticated:
-		return redirect(url_for('index'))
-	user = Users.verify_reset_token(token)
-	if user is None:
-		flash('Invalid or expired token', 'warning')
-		return redirect(url_for('reset_request'))
-	form = ResetPasswordForm()
-	if form.validate_on_submit():
-		hashed_pw = generate_password_hash(form.password_hash.data, "sha256")
-		user.password = hashed_pw
-		db.session.commit()
-		flash("Password has been updated!")
-		return redirect(url_for('login'))
-	return render_template('reset_token.html', title="Reset Password",form=form)
 
 
 
