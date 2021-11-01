@@ -3,31 +3,29 @@
 {% block content %}
 <center><div class="card text-dark bg-light mb-3" style="width: 40rem">
     <div class="card-header" style="background-color:CadetBlue; border: .5px solid Black">
-    <center><h1>Wholesale/EWaste - Receiving Placard</h1></center>
+    <center><h1>PICK Placard</h1></center>
     </div>
   <div class="card-body"style="border: .5px solid Black">
       <br/>
-            <form target="blank" action="WEWRPrint" method ="POST">
+            <form target="blank" action="pickPrint" method ="POST">
                 {{ form.hidden_tag() }}
                 <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
-                {{ form.JobNumber.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.JobNumber(class="form-control form-control-lg") }}
+                {{ form.SO.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.SO(class="form-control form-control-lg") }}
                 </div></strong>
                 <strong><div style="border: .5px solid Black; padding: 10px;">
-                {{ form.PoNumber.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.PoNumber(class="form-control form-control-lg") }}
+                {{ form.Data.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Data(class="form-select form-select-lg") }}
                 </div></strong>
                 <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
-                {{ form.Weight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.Weight(class="form-control form-control-lg") }}
+                {{ form.Evaluated.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Evaluated(class="form-select form-select-lg") }}
                 </div></strong>
-                <strong><div  style="border: .5px solid Black; padding: 10px;">
-                {{ form.Date.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                </br>
                     <div div class="col-lg-7">
-                {{ form.Date(class="datepicker") }}
+                {{ form.Date.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Date(class="form-select form-select-lg") }}
                     </div>
-                </div></strong>
+
                <br><br/>
                 <strong><div class="d-grid gap-2 col-6 mx-auto ">
                 {{ form.Submit(class="btn btn-outline-primary btn-lg")}}

@@ -10,7 +10,8 @@ from flask_login import UserMixin, login_user, login_manager, login_required, lo
 from flask_mail import Mail, Message
 import os
 from webforms import (LoginForm, UserForm, WDForm, PostAuditDismantleForm, WholesaleEWasteReceivingForm,
-					WholesaleClientShippingForm, EWasteClientShippingForm, PasswordForm, RequestResetForm, ResetPasswordForm)
+					WholesaleClientShippingForm, EWasteClientShippingForm, PasswordForm, RequestResetForm, ResetPasswordForm,
+					  pickForm, auditForm)
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 sys.setrecursionlimit(2000)
 
@@ -464,6 +465,7 @@ def index():
 @app.route('/PostAuditDismantle', methods=['GET', 'POST'])
 @login_required
 def PostAuditDismantle():
+	JobbNumber = None
 	PoNumber = None
 	Commodity = None
 	Data = None
@@ -471,6 +473,8 @@ def PostAuditDismantle():
 	form = PostAuditDismantleForm()
 	#Validate Form
 	if form.validate_on_submit():
+		JobbNumber = form.JobbNumber.data
+		form.JobbNumber.data = ""
 		PoNumber = form.PoNumber.data
 		form.PoNumber.data = ""
 		Commodity = form.Commodity.data
@@ -482,6 +486,7 @@ def PostAuditDismantle():
 		return redirect(url_for('PostAuditDismantle'))
 
 	return render_template("PostAuditDismantle.html",
+		JobbNumber=JobbNumber,
 		PoNumber = PoNumber,
 		Commodity = Commodity,
 		Data = Data,
@@ -491,12 +496,14 @@ def PostAuditDismantle():
 @app.route('/PADPrint', methods= ["POST"])
 
 def PADPrint():
+	JobNumber = request.form.get("JobNumber")
 	PoNumber = request.form.get("PoNumber")
 	Commodity = request.form.get("Commodity")
 	Data = request.form.get("Data")
 	Date = request.form.get("Date")
 
 	return render_template("PADPrint.html",
+		JobNumber=JobNumber,
 		PoNumber=PoNumber,
 		Commodity=Commodity,
 		Data=Data,
@@ -507,14 +514,14 @@ def PADPrint():
 @app.route('/WholesaleEWasteReceiving', methods=['GET', 'POST'])
 @login_required
 def  WholesaleEWasteReceiving():
-	Client = None
+	JobNumber = None
 	PoNumber = None
 	Weight = None
 	Date = None
 	form = WholesaleEWasteReceivingForm()
 	#Validate Form
 	if form.validate_on_submit():
-		Client = form.Client.data
+		JobNumber = form.JobNumber.data
 		PoNumber = form.PoNumber.data
 		Weight = form.Weight.data
 		Date = form.Date.data
@@ -525,7 +532,7 @@ def  WholesaleEWasteReceiving():
 
 
 	return render_template("WholesaleEWasteReceiving.html",
-		Client = Client,
+		JobNumber = JobNumber,
 		PoNumber = PoNumber,
 		Weight = Weight,
 		Date = Date,
@@ -536,13 +543,13 @@ def  WholesaleEWasteReceiving():
 
 
 def WEWRPrint():
-	Client = request.form.get("Client")
+	JobNumber = request.form.get("JobNumber")
 	PoNumber = request.form.get("PoNumber")
 	Weight = request.form.get("Weight")
 	Date = request.form.get("Date")
 
 	return render_template("WEWRPrint.html",
-		Client =Client,
+		JobNumber =JobNumber,
 		PoNumber=PoNumber,
 		Weight=Weight,
 		Date=Date)
@@ -551,7 +558,7 @@ def WEWRPrint():
 @app.route('/WholesaleClientShipping ', methods=['GET', 'POST'])
 @login_required
 def  WholesaleClientShipping():
-	Client = None
+	JobNumber = None
 	SoNumber = None
 	Weight = None
 	Dimms = None
@@ -574,8 +581,8 @@ def  WholesaleClientShipping():
 	form = WholesaleClientShippingForm()
 	#Validate Form
 	if form.validate_on_submit():
-		Client = form.Client.data
-		form.Client.data = ''
+		JobNumber = form.JobNumber.data
+		form.JobNumber.data = ''
 		SoNumber = form.SoNumber.data
 		form.SoNumber.data = ''
 		Weight = form.Weight.data
@@ -617,7 +624,7 @@ def  WholesaleClientShipping():
 
 
 	return render_template("WholesaleClientShipping.html",
-		Client = Client,
+		JobNumber = JobNumber,
 		SoNumber = SoNumber,
 		Weight = Weight,
 		Dimms = Dimms,
@@ -642,7 +649,7 @@ def  WholesaleClientShipping():
 @app.route('/WCSPrint', methods= ["POST"])
 
 def WCSPrint():
-	Client = request.form.get("Client")
+	JobNumber = request.form.get("JobNumber")
 	SoNumber = request.form.get("SoNumber")
 	Weight = request.form.get("Weight")
 	Dimms = request.form.get("Dimms")
@@ -664,7 +671,7 @@ def WCSPrint():
 	Date = request.form.get("Date")
 
 	return render_template("WCSPrint.html",
-		Client =Client,
+		JobNumber =JobNumber,
 		SoNumber=SoNumber,
 		Weight=Weight,
 		Dimms=Dimms,
@@ -688,7 +695,7 @@ def WCSPrint():
 @app.route('/EWasteClientShipping ', methods=['GET', 'POST'])
 @login_required
 def  EWasteClientShipping():
-	Client = None
+	JobNumber = None
 	SoNumber = None
 	Weight = None
 	Dimms = None
@@ -714,8 +721,8 @@ def  EWasteClientShipping():
 	form = EWasteClientShippingForm()
 	#Validate Form
 	if form.validate_on_submit():
-		Client = form.Client.data
-		form.Client.data = ''
+		JobNumber = form.JobNumber.data
+		form.JobNumber.data = ''
 		SoNumber = form.SoNumber.data
 		form.SoNumber.data = ''
 		Weight = form.Weight.data
@@ -763,7 +770,7 @@ def  EWasteClientShipping():
 
 
 	return render_template("EWasteClientShipping.html",
-		Client = Client,
+		JobNumber = JobNumber,
 		SoNumber = SoNumber,
 		Weight = Weight,
 		Dimms = Dimms,
@@ -792,7 +799,7 @@ def  EWasteClientShipping():
 @app.route('/EWCSPrint', methods= ["POST"])
 
 def EWCSPrint():
-	Client = request.form.get("Client")
+	JobNumber = request.form.get("JobNumber")
 	SoNumber = request.form.get("SoNumber")
 	Weight = request.form.get("Weight")
 	Dimms = request.form.get("Dimms")
@@ -817,7 +824,7 @@ def EWCSPrint():
 	Date = request.form.get("Date")
 
 	return render_template("EWCSPrint.html",
-		Client =Client,
+		JobNumber =JobNumber,
 		SoNumber=SoNumber,
 		Weight=Weight,
 		Dimms=Dimms,
@@ -841,8 +848,219 @@ def EWCSPrint():
 		PREC=PREC,
 		Date=Date)
 
+@app.route('/pick', methods=['GET', 'POST'])
+@login_required
+def  pick():
+	SO = None
+	Data = None
+	Evaluated = None
+	Date = None
+	form = pickForm()
+	#Validate Form
+	if form.validate_on_submit():
+		SO = form.SO.data
+		Data = form.Data.data
+		Evaluated = form.Evaluated.data
+		Date = form.Date.data
+		form.SO.data = ''
+		form.Data.data = ''
+		form.Evaluated.data = ''
+		form.Date.data = ''
 
 
+	return render_template("pick.html",
+		SO = SO,
+		Data = Data,
+		Evaluated = Evaluated,
+		Date = Date,
+		form = form)
+
+@app.route('/pickPrint', methods= ["POST"])
+def pickPrint():
+	SO = request.form.get("SO")
+	Data = request.form.get("Data")
+	Evaluated = request.form.get("Evaluated")
+	Date = request.form.get("Date")
+
+	return render_template("pickPrint.html",
+		SO =SO,
+		Data=Data,
+		Evaluated=Evaluated,
+		Date=Date)
+
+@app.route('/audit', methods=['GET', 'POST'])
+@login_required
+def  audit():
+	JobNumber = None
+	PO = None
+	Data = None
+	Evaluated = None
+	Date = None
+	form = auditForm()
+	#Validate Form
+	if form.validate_on_submit():
+		JobNumber = form.JobNumber.data
+		PO = form.PO.data
+		Data = form.Data.data
+		Evaluated = form.Evaluated.data
+		Date = form.Date.data
+		form.JobNumber.data = ''
+		form.PO.data = ''
+		form.Data.data = ''
+		form.Evaluated.data = ''
+		form.Date.data = ''
+
+
+	return render_template("audit.html",
+		JobNumber = JobNumber,
+		PO = PO,
+		Data = Data,
+		Evaluated = Evaluated,
+		Date = Date,
+		form = form)
+
+@app.route('/auditPrint', methods= ["POST"])
+def auditPrint():
+	JobNumber = request.form.get("JobNumber")
+	PO = request.form.get("PO")
+	Data = request.form.get("Data")
+	Evaluated = request.form.get("Evaluated")
+	Date = request.form.get("Date")
+
+	return render_template("auditPrint.html",
+		JobNumber = JobNumber,
+		PO =PO,
+		Data=Data,
+		Evaluated=Evaluated,
+		Date=Date)
+
+
+@app.route('/sort', methods=['GET', 'POST'])
+@login_required
+def  sort():
+	JobNumber = None
+	Data = None
+	Evaluated = None
+	Date = None
+	form = auditForm()
+	#Validate Form
+	if form.validate_on_submit():
+		JobNumber = form.JobNumber.data
+		Data = form.Data.data
+		Evaluated = form.Evaluated.data
+		Date = form.Date.data
+		form.JobNumber.data = ''
+		form.PO.data = ''
+		form.Data.data = ''
+		form.Evaluated.data = ''
+		form.Date.data = ''
+
+
+	return render_template("sort.html",
+		JobNumber = JobNumber,
+		Data = Data,
+		Evaluated = Evaluated,
+		Date = Date,
+		form = form)
+
+@app.route('/sortPrint', methods= ["POST"])
+def sortPrint():
+	JobNumber = request.form.get("JobNumber")
+	Data = request.form.get("Data")
+	Evaluated = request.form.get("Evaluated")
+	Date = request.form.get("Date")
+
+	return render_template("sortPrint.html",
+		JobNumber = JobNumber,
+		Data=Data,
+		Evaluated=Evaluated,
+		Date=Date)
+
+
+
+@app.route('/count', methods=['GET', 'POST'])
+@login_required
+def  count():
+	JobNumber = None
+	Data = None
+	Evaluated = None
+	Date = None
+	form = auditForm()
+	#Validate Form
+	if form.validate_on_submit():
+		JobNumber = form.JobNumber.data
+		Data = form.Data.data
+		Evaluated = form.Evaluated.data
+		Date = form.Date.data
+		form.JobNumber.data = ''
+		form.PO.data = ''
+		form.Data.data = ''
+		form.Evaluated.data = ''
+		form.Date.data = ''
+
+
+	return render_template("count.html",
+		JobNumber = JobNumber,
+		Data = Data,
+		Evaluated = Evaluated,
+		Date = Date,
+		form = form)
+
+@app.route('/countPrint', methods= ["POST"])
+def countPrint():
+	JobNumber = request.form.get("JobNumber")
+	Data = request.form.get("Data")
+	Evaluated = request.form.get("Evaluated")
+	Date = request.form.get("Date")
+
+	return render_template("countPrint.html",
+		JobNumber = JobNumber,
+		Data=Data,
+		Evaluated=Evaluated,
+		Date=Date)
+
+
+
+@app.route('/data_destruction', methods=['GET', 'POST'])
+@login_required
+def  data_destruction():
+	JobNumber = None
+	Data = None
+	Evaluated = None
+	Date = None
+	form = auditForm()
+	#Validate Form
+	if form.validate_on_submit():
+		JobNumber = form.JobNumber.data
+		Data = form.Data.data
+		Evaluated = form.Evaluated.data
+		Date = form.Date.data
+		form.JobNumber.data = ''
+		form.PO.data = ''
+		form.Data.data = ''
+		form.Evaluated.data = ''
+		form.Date.data = ''
+
+
+	return render_template("data_destruction.html",
+		JobNumber = JobNumber,
+		Data = Data,
+		Evaluated = Evaluated,
+		Date = Date,
+		form = form)
+
+@app.route('/data_destructionPrint', methods= ["POST"])
+def data_destructionPrint():
+	JobNumber = request.form.get("JobNumber")
+	Data = request.form.get("Data")
+	Evaluated = request.form.get("Evaluated")
+	Date = request.form.get("Date")
+
+	return render_template("data_destructionPrint.html",
+		JobNumber = JobNumber,
+		Data=Data,
+		Evaluated=Evaluated,
+		Date=Date)
 
 @app.route('/users/add', methods=['GET', 'POST'])
 def add_user():

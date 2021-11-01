@@ -10,14 +10,14 @@
       <br/>
             <form class="row g-3" target="blank" action="EWCSPrint" method ="POST">
                 {{ form.hidden_tag() }}
-                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;  background-color: Gainsboro">
-                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
-                {{ form.Client.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
-                {{ form.Client(class="form-control form-control-lg") }}
-                </div>
-                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px;">
                 {{ form.SoNumber.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.SoNumber(class="form-control form-control-lg") }}
+                </div>
+                <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.JobNumber.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.JobNumber(class="form-control form-control-lg") }}
                 </div>
                 </div></strong>
                 <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px;">

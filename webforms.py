@@ -42,6 +42,7 @@ class WDForm(FlaskForm):
 	Submit = SubmitField("Submit")
 
 class PostAuditDismantleForm(FlaskForm):
+	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
 	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
 	Commodity = StringField("Commodity", validators=[DataRequired()])
 	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
@@ -50,14 +51,51 @@ class PostAuditDismantleForm(FlaskForm):
 
 #create form class
 class WholesaleEWasteReceivingForm(FlaskForm):
-	Client = StringField("Client", validators=[DataRequired()])
+	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
 	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
 	Weight = IntegerField("Weight", validators=[DataRequired()])
 	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
 	Submit = SubmitField("Print")
 
+class pickForm(FlaskForm):
+	SO = IntegerField("SO Number", validators=[DataRequired()])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Evaluated = SelectField("Evaluated", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
+	Submit = SubmitField("Print")
+
+class auditForm(FlaskForm):
+	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
+	PO = IntegerField("PO Number", validators=[DataRequired()])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Evaluated = SelectField("Evaluated", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
+	Submit = SubmitField("Print")
+
+class sortForm(FlaskForm):
+	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Evaluated = SelectField("Evaluated", choices=[('NO', 'NO'), ('YES', 'YES')])
+	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
+	Submit = SubmitField("Print")
+
+class countForm(FlaskForm):
+	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Evaluated = SelectField("Evaluated", choices=[('NO', 'NO'), ('YES', 'YES')])
+	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
+	Submit = SubmitField("Print")
+
+class data_destructiontForm(FlaskForm):
+	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Evaluated = SelectField("Evaluated", choices=[('NO', 'NO'), ('YES', 'YES')])
+	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
+	Submit = SubmitField("Print")
+
+
 class WholesaleClientShippingForm(FlaskForm):
-	Client = StringField("Client", validators=[DataRequired()])
+	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
 	SoNumber = IntegerField("SO Number", validators=[DataRequired()])
 	Weight = IntegerField("Weight", validators=[DataRequired()])
 	Dimms = StringField("Dimms", validators=[DataRequired()])
@@ -66,7 +104,7 @@ class WholesaleClientShippingForm(FlaskForm):
 	CurrentPallet = StringField("Current Pallet", validators=[DataRequired()])
 	TotalPallets = StringField("Total Pallets", validators=[DataRequired()])
 	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
-	QA = SelectField("QA Checked By", choices=[('Adan J', 'Adan J'), ('Corey G', 'Corey G'), ('Jesus G', 'Jesus G'), ('Scott G', 'Scott G'),('Mike V', 'Mike V')])
+	QA = SelectField("QA Checked By", choices=[('Corey G', 'Corey G'), ('Scott G', 'Scott G'),('Mike V', 'Mike V')])
 	UECM = BooleanField("Unevaluated Equipment, Components & Materials")
 	UDM = BooleanField("Unsanitized Devices/Media")
 	ECTR = BooleanField("Equipment/Components for Test & Repair")
@@ -81,7 +119,7 @@ class WholesaleClientShippingForm(FlaskForm):
 
 
 class EWasteClientShippingForm(FlaskForm):
-	Client = StringField("Client", validators=[DataRequired()])
+	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
 	SoNumber = IntegerField("SO Number", validators=[DataRequired()])
 	Weight = IntegerField("Weight", validators=[DataRequired()])
 	Dimms = StringField("Dimms", validators=[DataRequired()])
@@ -93,7 +131,7 @@ class EWasteClientShippingForm(FlaskForm):
 	TotalPallets = StringField("Total Pallets", validators=[DataRequired()])
 	Evaluated = SelectField("Evaluated", choices=[('YES', 'YES'), ('NO', 'NO')])
 	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
-	QA = SelectField("QA Checked By", choices=[('Adan J', 'Adan J'), ('Corey G', 'Corey G'), ('Jesus G', 'Jesus G'), ('Scott G', 'Scott G'),('Mike V', 'Mike V')])
+	QA = SelectField("QA Checked By", choices=[('Corey G', 'Corey G'), ('Scott G', 'Scott G'),('Mike V', 'Mike V')])
 	UECM = BooleanField("Unevaluated Equipment, Components & Materials")
 	UDM = BooleanField("Unsanitized Devices/Media")
 	ECTR = BooleanField("Equipment/Components for Test & Repair")
