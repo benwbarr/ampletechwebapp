@@ -43,8 +43,10 @@ class WDForm(FlaskForm):
 
 class PostAuditDismantleForm(FlaskForm):
 	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
+	LotNumber = StringField("Lot Number", validators=[DataRequired()])
 	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
 	Commodity = StringField("Commodity", validators=[DataRequired()])
+	QTY = IntegerField("Quantity", validators=[DataRequired()])
 	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
 	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
 	Submit = SubmitField("Print")
@@ -58,6 +60,7 @@ class WholesaleEWasteReceivingForm(FlaskForm):
 	Submit = SubmitField("Print")
 
 class pickForm(FlaskForm):
+	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
 	SO = IntegerField("SO Number", validators=[DataRequired()])
 	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
 	Evaluated = SelectField("Evaluated", choices=[('YES', 'YES'), ('NO', 'NO')])

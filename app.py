@@ -466,8 +466,10 @@ def index():
 @login_required
 def PostAuditDismantle():
 	JobbNumber = None
+	LotNumber = None
 	PoNumber = None
 	Commodity = None
+	QTY = None
 	Data = None
 	Date = None
 	form = PostAuditDismantleForm()
@@ -475,8 +477,12 @@ def PostAuditDismantle():
 	if form.validate_on_submit():
 		JobbNumber = form.JobbNumber.data
 		form.JobbNumber.data = ""
+		LotNumber = form.LotNumber.data
+		form.LotNumber.data = ""
 		PoNumber = form.PoNumber.data
 		form.PoNumber.data = ""
+		QTY = form.QTY.data
+		form.QTY.data = ""
 		Commodity = form.Commodity.data
 		form.Commodity.data = ""
 		Data = form.Data.data
@@ -487,8 +493,10 @@ def PostAuditDismantle():
 
 	return render_template("PostAuditDismantle.html",
 		JobbNumber=JobbNumber,
+		LotNumber=LotNumber,
 		PoNumber = PoNumber,
 		Commodity = Commodity,
+		QTY=QTY,
 		Data = Data,
 		Date = Date,
 		form = form)
@@ -497,15 +505,19 @@ def PostAuditDismantle():
 
 def PADPrint():
 	JobNumber = request.form.get("JobNumber")
+	LotNumber = request.form.get("LotNumber")
 	PoNumber = request.form.get("PoNumber")
 	Commodity = request.form.get("Commodity")
+	QTY = request.form.get("QTY")
 	Data = request.form.get("Data")
 	Date = request.form.get("Date")
 
 	return render_template("PADPrint.html",
 		JobNumber=JobNumber,
+		LotNumber=LotNumber,
 		PoNumber=PoNumber,
 		Commodity=Commodity,
+		QTY=QTY,
 		Data=Data,
 		Date=Date)
 
@@ -851,6 +863,7 @@ def EWCSPrint():
 @app.route('/pick', methods=['GET', 'POST'])
 @login_required
 def  pick():
+	JobNumber = None
 	SO = None
 	Data = None
 	Evaluated = None
@@ -858,6 +871,7 @@ def  pick():
 	form = pickForm()
 	#Validate Form
 	if form.validate_on_submit():
+		JobNumber = form.JobNumber.data
 		SO = form.SO.data
 		Data = form.Data.data
 		Evaluated = form.Evaluated.data
@@ -869,6 +883,7 @@ def  pick():
 
 
 	return render_template("pick.html",
+		JobNumber = JobNumber,
 		SO = SO,
 		Data = Data,
 		Evaluated = Evaluated,
@@ -877,12 +892,14 @@ def  pick():
 
 @app.route('/pickPrint', methods= ["POST"])
 def pickPrint():
+	JobNumber = request.form.get("JobNumber")
 	SO = request.form.get("SO")
 	Data = request.form.get("Data")
 	Evaluated = request.form.get("Evaluated")
 	Date = request.form.get("Date")
 
 	return render_template("pickPrint.html",
+		JobNumber =JobNumber,
 		SO =SO,
 		Data=Data,
 		Evaluated=Evaluated,

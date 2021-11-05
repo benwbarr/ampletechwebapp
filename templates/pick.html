@@ -10,14 +10,18 @@
             <form target="blank" action="pickPrint" method ="POST">
                 {{ form.hidden_tag() }}
                 <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                {{ form.JobNumber.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.JobNumber(class="form-control form-control-lg") }}
+                </div></strong>
+                <strong><div style="border: .5px solid Black; padding: 10px">
                 {{ form.SO.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.SO(class="form-control form-control-lg") }}
                 </div></strong>
-                <strong><div style="border: .5px solid Black; padding: 10px;">
+                <strong><div style="border: .5px solid Black; padding: 10px;; background-color: Gainsboro">
                 {{ form.Data.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.Data(class="form-select form-select-lg") }}
                 </div></strong>
-                <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                <strong><div style="border: .5px solid Black; padding: 10px">
                 {{ form.Evaluated.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.Evaluated(class="form-select form-select-lg") }}
                 </div></strong>
