@@ -5,13 +5,15 @@ import sys
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
+import babel
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, login_manager, login_required, logout_user, current_user, LoginManager
 from flask_mail import Mail, Message
+from datetime import datetime
 import os
 from webforms import (LoginForm, UserForm, WDForm, PostAuditDismantleForm, WholesaleEWasteReceivingForm,
 					WholesaleClientShippingForm, EWasteClientShippingForm, PasswordForm, RequestResetForm, ResetPasswordForm,
-					  pickForm, auditForm)
+					  pickForm, auditForm, preauditForm, ITADSortForm, InventoryWSForm)
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 sys.setrecursionlimit(2000)
 
@@ -462,22 +464,29 @@ def index():
 
 
 
-@app.route('/PostAuditDismantle', methods=['GET', 'POST'])
+@app.route('/InventoryRec', methods=['GET', 'POST'])
 @login_required
-def PostAuditDismantle():
+def InventoryRec():
 	JobbNumber = None
-	LotNumber = None
+	BatchNumber = None
 	PoNumber = None
 	Commodity = None
+	Dimms = None
+	Dimms2 = None
+	Dimms3 = None
 	QTY = None
+	NetWeight = None
+	GrossWeight = None
+	TareWeight = None
 	Data = None
+	Evaluated = None
 	Date = None
 	form = PostAuditDismantleForm()
 	#Validate Form
 	if form.validate_on_submit():
 		JobbNumber = form.JobbNumber.data
 		form.JobbNumber.data = ""
-		LotNumber = form.LotNumber.data
+		BatchNumber = form.BatchNumber.data
 		form.LotNumber.data = ""
 		PoNumber = form.PoNumber.data
 		form.PoNumber.data = ""
@@ -485,41 +494,221 @@ def PostAuditDismantle():
 		form.QTY.data = ""
 		Commodity = form.Commodity.data
 		form.Commodity.data = ""
+		Dimms = form.Dimms.data
+		form.Dimms.data = ''
+		Dimms2 = form.Dimms2.data
+		form.Dimms2.data = ''
+		Dimms3 = form.Dimms3.data
+		form.Dimms3.data = ''
+		NetWeight = form.NetWeight.data
+		form.NetWeight.data = ''
+		GrossWeight = form.GrossWeight.data
+		form.GrossWeight.data = ''
+		TareWeight = form.TareWeight.data
+		form.TareWeight.data = ''
 		Data = form.Data.data
 		form.Data.data = ""
+		Evaluated = form.Evaluated.data
+		form.Evaluated.data = ""
 		Date = form.Date.data
 		form.Data.data = ""
 		return redirect(url_for('PostAuditDismantle'))
 
-	return render_template("PostAuditDismantle.html",
+	return render_template("InventoryRec.html",
 		JobbNumber=JobbNumber,
-		LotNumber=LotNumber,
+		BatchNumber=BatchNumber,
 		PoNumber = PoNumber,
 		Commodity = Commodity,
+		Dimms=Dimms,
+		Dimms2=Dimms,
+		Dimms3=Dimms,
+		NetWeight=NetWeight,
+		GrossWeight=GrossWeight,
+		TareWeight=TareWeight,
 		QTY=QTY,
 		Data = Data,
+		Evaluated=Evaluated,
 		Date = Date,
 		form = form)
 
-@app.route('/PADPrint', methods= ["POST"])
+@app.route('/IRPrint', methods= ["POST"])
 
-def PADPrint():
+def IRPrint():
 	JobNumber = request.form.get("JobNumber")
-	LotNumber = request.form.get("LotNumber")
+	BatchNumber = request.form.get("BatchNumber")
 	PoNumber = request.form.get("PoNumber")
 	Commodity = request.form.get("Commodity")
+	Dimms = request.form.get("Dimms")
+	Dimms2 = request.form.get("Dimms2")
+	Dimms3 = request.form.get("Dimms3")
+	NetWeight = request.form.get("NetWeight")
+	GrossWeight = request.form.get("GrossWeight")
+	TareWeight = request.form.get("TareWeight")
 	QTY = request.form.get("QTY")
 	Data = request.form.get("Data")
+	Evaluated = request.form.get("Evaluated")
 	Date = request.form.get("Date")
 
-	return render_template("PADPrint.html",
+	return render_template("IRPrint.html",
 		JobNumber=JobNumber,
-		LotNumber=LotNumber,
+		BatchNumber=BatchNumber,
 		PoNumber=PoNumber,
 		Commodity=Commodity,
+		Dimms=Dimms,
+		Dimms2=Dimms,
+		Dimms3=Dimms,
+		NetWeight=NetWeight,
+		GrossWeight=GrossWeight,
+		TareWeight=TareWeight,
 		QTY=QTY,
 		Data=Data,
+		Evaluated=Evaluated,
 		Date=Date)
+
+
+@app.route('/InventoryWS', methods=['GET', 'POST'])
+@login_required
+def InventoryWS():
+	JobbNumber = None
+	BatchNumber = None
+	PoNumber = None
+	Commodity = None
+	Dimms = None
+	Dimms2 = None
+	Dimms3 = None
+	QTY = None
+	NetWeight = None
+	GrossWeight = None
+	TareWeight = None
+	Data = None
+	Evaluated = None
+	Date = None
+	form = InventoryWSForm()
+	#Validate Form
+	if form.validate_on_submit():
+		JobbNumber = form.JobbNumber.data
+		form.JobbNumber.data = ""
+		BatchNumber = form.BatchNumber.data
+		form.LotNumber.data = ""
+		PoNumber = form.PoNumber.data
+		form.PoNumber.data = ""
+		QTY = form.QTY.data
+		form.QTY.data = ""
+		Commodity = form.Commodity.data
+		form.Commodity.data = ""
+		Dimms = form.Dimms.data
+		form.Dimms.data = ''
+		Dimms2 = form.Dimms2.data
+		form.Dimms2.data = ''
+		Dimms3 = form.Dimms3.data
+		form.Dimms3.data = ''
+		NetWeight = form.NetWeight.data
+		form.NetWeight.data = ''
+		GrossWeight = form.GrossWeight.data
+		form.GrossWeight.data = ''
+		TareWeight = form.TareWeight.data
+		form.TareWeight.data = ''
+		Data = form.Data.data
+		form.Data.data = ""
+		Evaluated = form.Evaluated.data
+		form.Evaluated.data = ""
+		Date = form.Date.data
+		form.Data.data = ""
+		return redirect(url_for('PostAuditDismantle'))
+
+	return render_template("InventoryWS.html",
+		JobbNumber=JobbNumber,
+		BatchNumber=BatchNumber,
+		PoNumber = PoNumber,
+		Commodity = Commodity,
+		Dimms=Dimms,
+		Dimms2=Dimms,
+		Dimms3=Dimms,
+		NetWeight=NetWeight,
+		GrossWeight=GrossWeight,
+		TareWeight=TareWeight,
+		QTY=QTY,
+		Data = Data,
+		Evaluated=Evaluated,
+		Date = Date,
+		form = form)
+
+@app.route('/IWSPrint', methods= ["POST"])
+
+def IWSPrint():
+	JobNumber = request.form.get("JobNumber")
+	BatchNumber = request.form.get("BatchNumber")
+	PoNumber = request.form.get("PoNumber")
+	Commodity = request.form.get("Commodity")
+	Dimms = request.form.get("Dimms")
+	Dimms2 = request.form.get("Dimms2")
+	Dimms3 = request.form.get("Dimms3")
+	NetWeight = request.form.get("NetWeight")
+	GrossWeight = request.form.get("GrossWeight")
+	TareWeight = request.form.get("TareWeight")
+	QTY = request.form.get("QTY")
+	Data = request.form.get("Data")
+	Evaluated = request.form.get("Evaluated")
+	Date = request.form.get("Date")
+
+	return render_template("IWSPrint.html",
+		JobNumber=JobNumber,
+		BatchNumber=BatchNumber,
+		PoNumber=PoNumber,
+		Commodity=Commodity,
+		Dimms=Dimms,
+		Dimms2=Dimms,
+		Dimms3=Dimms,
+		NetWeight=NetWeight,
+		GrossWeight=GrossWeight,
+		TareWeight=TareWeight,
+		QTY=QTY,
+		Data=Data,
+		Evaluated=Evaluated,
+		Date=Date)
+
+
+@app.route('/ITADSort', methods=['GET', 'POST'])
+@login_required
+def ITADSort():
+	Commodity = None
+	TareWeight = None
+	Data = None
+	Evaluated = None
+	form = ITADSortForm()
+	#Validate Form
+	if form.validate_on_submit():
+		Commodity = form.Commodity.data
+		form.Commodity.data = ""
+		TareWeight = form.TareWeight.data
+		form.TareWeight.data = ''
+		Data = form.Data.data
+		form.Data.data = ""
+		Evaluated = form.Evaluated.data
+		form.Evaluated.data = ""
+		return redirect(url_for('ITADSort'))
+
+	return render_template("ITADSort.html",
+		Commodity = Commodity,
+		TareWeight=TareWeight,
+		Data = Data,
+		Evaluated=Evaluated,
+		form = form)
+
+@app.route('/ITADSortPrint', methods= ["POST"])
+
+def ITADSortPrint():
+	Commodity = request.form.get("Commodity")
+	TareWeight = request.form.get("TareWeight")
+	Data = request.form.get("Data")
+	Evaluated = request.form.get("Evaluated")
+
+	return render_template("ITADSortPrint.html",
+		Commodity=Commodity,
+		TareWeight=TareWeight,
+		Data=Data,
+		Evaluated=Evaluated)
+
 
 
 
@@ -529,6 +718,9 @@ def  WholesaleEWasteReceiving():
 	JobNumber = None
 	PoNumber = None
 	Weight = None
+	CurrentPallet = None
+	TotalPallets = None
+	Data = None
 	Date = None
 	form = WholesaleEWasteReceivingForm()
 	#Validate Form
@@ -536,10 +728,16 @@ def  WholesaleEWasteReceiving():
 		JobNumber = form.JobNumber.data
 		PoNumber = form.PoNumber.data
 		Weight = form.Weight.data
+		CurrentPallet = form.CurrentPallet.data
+		TotalPallets = form.TotalPallets.data
+		Data = form.Data.data
 		Date = form.Date.data
 		form.Client.data = ''
 		form.PoNumber.data = ''
 		form.Weight.data = ''
+		form.CurrentPallet.data = ''
+		form.TotalPallets.data = ''
+		form.Data.data = ''
 		form.Date.data = ''
 
 
@@ -547,7 +745,10 @@ def  WholesaleEWasteReceiving():
 		JobNumber = JobNumber,
 		PoNumber = PoNumber,
 		Weight = Weight,
-		Date = Date,
+		CurrentPallet = CurrentPallet,
+		TotalPallets = TotalPallets,
+		Data=Data,
+		Date = str(Date),
 		form = form)
 
 @app.route('/WEWRPrint', methods= ["POST"])
@@ -558,12 +759,18 @@ def WEWRPrint():
 	JobNumber = request.form.get("JobNumber")
 	PoNumber = request.form.get("PoNumber")
 	Weight = request.form.get("Weight")
+	CurrentPallet = request.form.get("CurrentPallet")
+	TotalPallets = request.form.get("TotalPallets")
+	Data = request.form.get("Data")
 	Date = request.form.get("Date")
 
 	return render_template("WEWRPrint.html",
 		JobNumber =JobNumber,
 		PoNumber=PoNumber,
 		Weight=Weight,
+		CurrentPallet=CurrentPallet,
+		TotalPallets=TotalPallets,
+		Data=Data,
 		Date=Date)
 
 
@@ -946,10 +1153,45 @@ def auditPrint():
 
 	return render_template("auditPrint.html",
 		JobNumber = JobNumber,
+		PO = PO,
+		Data=Data,
+		Evaluated=Evaluated,
+		Date=Date)
+
+@app.route('/PreAudit', methods=['GET', 'POST'])
+@login_required
+def  PreAudit():
+	JobNumber = None
+	Data = None
+	form = preauditForm()
+	#Validate Form
+	if form.validate_on_submit():
+		JobNumber = form.JobNumber.data
+		Data = form.Data.data
+		form.JobNumber.data = ''
+		form.Data.data = ''
+
+
+	return render_template("PreAudit.html",
+		JobNumber = JobNumber,
+		Data = Data,
+		form = form)
+
+@app.route('/PAPrint', methods= ["POST"])
+def PAPrint():
+	JobNumber = request.form.get("JobNumber")
+	PO = request.form.get("PO")
+	Data = request.form.get("Data")
+	Evaluated = request.form.get("Evaluated")
+	Date = request.form.get("Date")
+
+	return render_template("PAPrint.html",
+		JobNumber = JobNumber,
 		PO =PO,
 		Data=Data,
 		Evaluated=Evaluated,
 		Date=Date)
+
 
 
 @app.route('/sort', methods=['GET', 'POST'])
@@ -1211,6 +1453,11 @@ def reset_token(token):
 		return redirect(url_for('login'))
 	return render_template('reset_token.html', title="Reset Password",form=form)
 
+@app.template_filter('datetimeformat')
+def datetimeformat(value, format ='%d-%m-%Y'):
+    return value.strftime(format)
+
+#app.jinja_env.filters['datetimeformat'] = datetimeformat
 
 
 if __name__ == "__main__":

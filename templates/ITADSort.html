@@ -1,0 +1,56 @@
+{% extends 'base.html'  %}
+
+{% block content %}
+<center><div class="card text-dark bg-light mb-3" style="width: 40rem">
+    <div class="card-header" style="background-color:CadetBlue; border: .5px solid Black">
+    <center><h1>ITAD Sort Placard</h1></center>
+    </div>
+  <div class="card-body"style="border: .5px solid Black">
+      <br/>
+            <form target="blank" action="ITADSortPrint" method ="POST">
+                {{ form.hidden_tag() }}
+                <strong><div style="border: .5px solid Black; padding: 10px;">
+                {{ form.Commodity.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Commodity(class="form-select form-select-lg") }}
+                </div></strong>
+
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion-item" style="border: .5px solid Black">
+                    <h2 class="accordion-header" id="flush-headingOne"></h2>
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"; style="background-color: LightBlue">
+                        <h4>Commodity Pictures</h4>
+                    </button>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+            </div>
+    </div>
+</div>
+
+
+                <strong><div style="border: .5px solid Black; padding: 10px;">
+                {{ form.Data.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Data(class="form-select form-select-lg") }}
+                </div></strong>
+                <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                {{ form.Evaluated.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Evaluated(class="form-select form-select-lg") }}
+                </div></strong>
+                <strong><div style="border: .5px solid Black; padding: 10px">
+                {{ form.TareWeight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.TareWeight(class="form-control form-control-lg") }}
+                </div></strong>
+                 <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                {{ form.Data.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Data(class="form-select form-select-lg") }}
+                 </div></strong>
+
+               <br><br/>
+                <strong><div class="d-grid gap-2 col-6 mx-auto ">
+                {{ form.Submit(class="btn btn-outline-primary btn-lg")}}
+                    </div></strong>
+            </form>
+    </div>
+</div></center>
+
+
+{% endblock %}

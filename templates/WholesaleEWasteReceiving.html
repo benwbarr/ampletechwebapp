@@ -3,7 +3,7 @@
 {% block content %}
 <center><div class="card text-dark bg-light mb-3" style="width: 40rem">
     <div class="card-header" style="background-color:CadetBlue; border: .5px solid Black">
-    <center><h1>Wholesale/EWaste - Receiving Placard</h1></center>
+    <center><h1>Receiving Placard</h1></center>
     </div>
   <div class="card-body"style="border: .5px solid Black">
       <br/>
@@ -21,11 +21,23 @@
                 {{ form.Weight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 {{ form.Weight(class="form-control form-control-lg") }}
                 </div></strong>
-                <strong><div  style="border: .5px solid Black; padding: 10px;">
+                <strong><div style="border: .5px solid Black; padding: 10px">
+                {{ form.CurrentPallet.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.CurrentPallet(class="form-control form-control-lg") }}
+                </div></strong>
+                <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                {{ form.TotalPallets.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.TotalPallets(class="form-control form-control-lg") }}
+                </div></strong>
+                <strong><div style="border: .5px solid Black; padding: 10px">
+                {{ form.Data.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Data(class="form-select form-select-lg") }}
+                </div></strong>
+                <strong><div  style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
                 {{ form.Date.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
                 </br>
                     <div div class="col-lg-7">
-                {{ form.Date(class="datepicker") }}
+                {{ form.Date(class="datepicker")}}
                     </div>
                 </div></strong>
                <br><br/>

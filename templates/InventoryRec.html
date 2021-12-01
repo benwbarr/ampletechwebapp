@@ -1,0 +1,96 @@
+{% extends 'base.html'  %}
+
+{% block content %}
+<center><div class="card text-dark bg-light mb-3" style="width: 75rem">
+    <div class="card-header" style="background-color:CadetBlue; border: .5px solid Black">
+    <center><h1>Inventory Recycling - Placard</h1></center>
+    </div>
+  <div class="card-body"style="border: .5px solid Black">
+      <br/>
+            <form class="row g-3"  target="blank" action="IRPrint" method ="POST">
+                {{ form.hidden_tag() }}
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px;">
+                {{ form.JobNumber.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.JobNumber(class="form-control form-control-lg") }}
+                </div>
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.BatchNumber.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.BatchNumber(class="form-control form-control-lg") }}
+                </div>
+                </div></strong>
+                <strong><div style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                {{ form.Commodity.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Commodity(class="form-control form-control-lg") }}
+                </div></strong>
+
+<div class="accordion accordion-flush" id="accordionFlushExample">
+    <div class="accordion-item" style="border: .5px solid Black">
+    <h2 class="accordion-header" id="flush-headingOne"></h2>
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"; style="background-color: LightBlue">
+        <h4>Commodity Pictures</h4>
+      </button>
+    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+      <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+    </div>
+    </div>
+</div>
+
+
+
+
+                <center><strong><div style="border: .5px solid Black; padding: 10px">
+                {{ form.Dimms.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                    </br>
+                <div class="row g-3" style="padding: 10px">
+                <div class="col-sm">
+                {{ form.Dimms(class="form-control form-control-lg") }}
+                </div>
+                <div class="col-sm">
+                {{ form.Dimms2(class="form-control form-control-lg") }}
+                </div>
+                <div class="col-sm">
+                {{ form.Dimms3(class="form-control form-control-lg") }}
+                </div>
+                </div>
+                    </div></strong></center>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px;">
+                {{ form.Data.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Data(class="form-select form-select-lg") }}
+                </div>
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.NetWeight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.NetWeight(class="form-control form-control-lg") }}
+                </div>
+                </div></strong>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px;">
+                {{ form.GrossWeight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.GrossWeight(class="form-control form-control-lg") }}
+                </div>
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.TareWeight.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.TareWeight(class="form-control form-control-lg") }}
+                </div>
+                </div></strong>
+                <strong><div class="row g-3" style="border: .5px solid Black; padding: 10px; background-color: Gainsboro">
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px;">
+                {{ form.Date.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Date(class="form-select form-select-lg") }}
+                </div>
+                 <div class="col-md-6" style="border: .5px solid Black; padding: 10px">
+                {{ form.Evaluated.label(class="ol-sm-2 col-form-label col-form-label-lg") }}
+                {{ form.Evaluated(class="form-select form-select-lg") }}
+                <</div>
+                </div></strong>
+                <br/>
+                <strong><div class="d-grid gap-2 col-6 mx-auto ">
+                {{ form.Submit(class="btn btn-primary btn-lg")}}
+                </div></strong>
+            </form>
+    </div>
+</div></center>
+
+
+{% endblock %}

@@ -492,7 +492,7 @@ def PostAuditDismantle():
 		form.Data.data = ""
 		return redirect(url_for('PostAuditDismantle'))
 
-	return render_template("PostAuditDismantle.html",
+	return render_template("InventoryRec.html",
 		PoNumber = PoNumber,
 		Commodity = Commodity,
 		Date = Data,
@@ -505,7 +505,7 @@ def PADPrint():
 	Commodity = request.form.get("Commodity")
 	Data = request.form.get("Data")
 
-	return render_template("PADPrint.html",
+	return render_template("IRPrint.html",
 		PoNumber=PoNumber,
 		Commodity=Commodity,
 		Data=Data)

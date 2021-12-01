@@ -43,12 +43,67 @@ class WDForm(FlaskForm):
 
 class PostAuditDismantleForm(FlaskForm):
 	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
-	LotNumber = StringField("Lot Number", validators=[DataRequired()])
+	BatchNumber = StringField("Batch Number", validators=[DataRequired()])
 	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
-	Commodity = StringField("Commodity", validators=[DataRequired()])
-	QTY = IntegerField("Quantity", validators=[DataRequired()])
+	Commodity = SelectField("Commodity", choices=[('Desktops', 'Desktops'), ('Laptops', 'Laptops'), ('Keyboards and Mice', 'Keyboards and Mice'),
+							('Mice', 'Mice'), ('Docking Stations above cutline', 'Docking Stations above cutline'), ('Docking Stations below cutline', 'Docking Stations below cutline'),
+												  ('Mixed wires', 'Mixed wires'), ('Adapters', 'Adapters'), ('Batteries','Batteries'), ('Ram', 'Ram'),
+												  ('Networking', 'Networking'), ('Headsets', 'Headsets'), ('CAT 5', 'CAT 5'), ('LCDs', 'LCDs'),
+												('Green board', 'Green board'), ('IP Phones', 'IP Phones'), ('Scrap servers','Scrap servers'),
+												  ('UPS/APC’s', 'UPS/APC’s'), ('Aluminum', 'Aluminum'),('Plastic', 'Plastic'), ('Steel','Steel'),
+												  ('Cardboard', 'Cardboard'), ('Trash', 'Trash')])
+	Dimms = StringField("Dimms", validators=[DataRequired()])
+	Dimms2 = StringField("Dimms", validators=[DataRequired()])
+	Dimms3 = StringField("Dimms", validators=[DataRequired()])
+	NetWeight = IntegerField("Net Weight", validators=[DataRequired()])
+	GrossWeight = IntegerField("Gross Weight", validators=[DataRequired()])
+	TareWeight = IntegerField("Tare Weight", validators=[DataRequired()])
 	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Evaluated = SelectField("Evaluated", choices=[('YES', 'YES'), ('NO', 'NO')])
 	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
+	Submit = SubmitField("Print")
+
+class InventoryWSForm(FlaskForm):
+	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
+	BatchNumber = StringField("Batch Number", validators=[DataRequired()])
+	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
+	Commodity = SelectField("Commodity", choices=[('Desktops', 'Desktops'), ('Laptops', 'Laptops'),
+												  ('Keyboards and Mice', 'Keyboards and Mice'),
+												  ('Mice', 'Mice'), ('Docking Stations above cutline',
+																	 'Docking Stations above cutline'), (
+												  'Docking Stations below cutline',
+												  'Docking Stations below cutline'),
+												  ('Mixed wires', 'Mixed wires'), ('Adapters', 'Adapters'),
+												  ('Batteries', 'Batteries'), ('Ram', 'Ram'),
+												  ('Networking', 'Networking'), ('Headsets', 'Headsets'),
+												  ('CAT 5', 'CAT 5'), ('LCDs', 'LCDs'),
+												  ('Green board', 'Green board'), ('IP Phones', 'IP Phones'),
+												  ('Scrap servers', 'Scrap servers'),
+												  ('UPS/APC’s', 'UPS/APC’s'), ('Aluminum', 'Aluminum'),
+												  ('Plastic', 'Plastic'), ('Steel', 'Steel'),
+												  ('Cardboard', 'Cardboard'), ('Trash', 'Trash')])
+	Dimms = StringField("Dimms", validators=[DataRequired()])
+	Dimms2 = StringField("Dimms", validators=[DataRequired()])
+	Dimms3 = StringField("Dimms", validators=[DataRequired()])
+	NetWeight = IntegerField("Net Weight", validators=[DataRequired()])
+	GrossWeight = IntegerField("Gross Weight", validators=[DataRequired()])
+	TareWeight = IntegerField("Tare Weight", validators=[DataRequired()])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Evaluated = SelectField("Evaluated", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
+	Submit = SubmitField("Print")
+
+class ITADSortForm(FlaskForm):
+	Commodity = SelectField("Commodity", choices=[('Desktops', 'Desktops'), ('Laptops', 'Laptops'), ('Keyboards and Mice', 'Keyboards and Mice'),
+							('Mice', 'Mice'), ('Docking Stations above cutline', 'Docking Stations above cutline'), ('Docking Stations below cutline', 'Docking Stations below cutline'),
+												  ('Mixed wires', 'Mixed wires'), ('Adapters', 'Adapters'), ('Batteries','Batteries'), ('Ram', 'Ram'),
+												  ('Networking', 'Networking'), ('Headsets', 'Headsets'), ('CAT 5', 'CAT 5'), ('LCDs', 'LCDs'),
+												('Green board', 'Green board'), ('IP Phones', 'IP Phones'), ('Scrap servers','Scrap servers'),
+												  ('UPS/APC’s', 'UPS/APC’s'), ('Aluminum', 'Aluminum'),('Plastic', 'Plastic'), ('Steel','Steel'),
+												  ('Cardboard', 'Cardboard'), ('Trash', 'Trash')])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	Evaluated = SelectField("Evaluated", choices=[('YES', 'YES'), ('NO', 'NO')])
+	TareWeight = IntegerField("Tare Weight", validators=[DataRequired()])
 	Submit = SubmitField("Print")
 
 #create form class
@@ -57,6 +112,9 @@ class WholesaleEWasteReceivingForm(FlaskForm):
 	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
 	Weight = IntegerField("Weight", validators=[DataRequired()])
 	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
+	CurrentPallet = StringField("Current Pallet", validators=[DataRequired()])
+	TotalPallets = StringField("Total Pallets", validators=[DataRequired()])
 	Submit = SubmitField("Print")
 
 class pickForm(FlaskForm):
@@ -73,6 +131,11 @@ class auditForm(FlaskForm):
 	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
 	Evaluated = SelectField("Evaluated", choices=[('YES', 'YES'), ('NO', 'NO')])
 	Date = DateField("Date", format='%m-%d-%Y', validators=[DataRequired()])
+	Submit = SubmitField("Print")
+
+class preauditForm(FlaskForm):
+	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
+	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
 	Submit = SubmitField("Print")
 
 class sortForm(FlaskForm):
