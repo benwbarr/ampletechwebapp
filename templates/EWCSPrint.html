@@ -1,27 +1,31 @@
-<center><h1 style="border: 2px solid black; font-size:48; margin : 0">SHIPPING E-WASTE</h1></center>
-<center><h1 style="border: 2px solid black; font-size:48; margin : 0">SO: {{SoNumber}}</h1></center>
-<center><h1 style="border: 2px solid black; font-size:48; margin : 0">JOB NUMBER: {{JobNumber}}</h1></center>
-<center><h1 style="border: 2px solid black; font-size:48; margin : 0">WEIGHT: {{Weight}}</h1></center>
-<center><h1 style="border: 2px solid black; font-size:48; margin : 0">DIMMS: {{Dimms}} X {{Dimms2}} X {{Dimms3}}</h1></center>
-<center><h1 style="border: 2px solid black; font-size:48; margin : 0">COMMODITY: {{Commodity|upper}}</h1></center>
-<center><h1 style="border: 2px solid black; font-size:48; margin : 0">CATEGORY: {{Category}}</h1></center>
-<center><h1 style="border: 2px solid black; font-size:48; margin : 0">PALLETS:__{{CurrentPallet}}__OF__{{TotalPallets}}__</h1></center>
+<center><h1 style="border: 2px solid black; font-size:50; margin : 0">SHIPPING E-WASTE</h1></center>
+<center><h1 style="border: 2px solid black; font-size:50; margin : 0">SO # {{SoNumber}}</h1></center>
+<center><h1 style="border: 2px solid black; font-size:55; margin : 0">Batch # {{JobNumber}}</h1></center>
+<center><h1 style="border: 2px solid black; font-size:50; margin : 0">WEIGHT: {{Weight}}</h1></center>
+<center><h1 style="border: 2px solid black; font-size:50; margin : 0">DIMMS: {{Dimms}} x {{Dimms2}} x {{Dimms3}}</h1></center>
+<center><h1 style="border: 2px solid black; font-size:50; margin : 0">COMMODITY: {{Commodity|upper}}</h1></center>
+<center><h1 style="border: 2px solid black; font-size:50; margin : 0">CATEGORY: {{Category}}</h1></center>
+<center><h1 style="border: 2px solid black; font-size:50; margin : 0">PALLETS:__{{CurrentPallet}}__OF__{{TotalPallets}}__</h1></center>
 
 {% if Category == "C0" %}
-    <center><h1 style="border: 2px solid black; font-size:48; margin : 0">NON EVALUATED</h1></center>
+    <center><h1 style="border: 2px solid black; font-size:50; margin : 0">NON EVALUATED</h1></center>
 {% else %}
     {% if Category == "C0" %}
-    <center><h1 style="border: 2px solid black; font-size:48; margin : 0">{{ Evaluated|upper }}</h1></center>
+    <center><h1 style="border: 2px solid black; font-size:50; margin : 0">{{ Evaluated|upper }}</h1></center>
     {% endif %}
 {% endif %}
 
 
-<center><h1 style="border: 2px solid black; font-size:48; margin : 0">DATA {{ Data }}</h1></center>
-<center><h1 style="border: 2px solid black; font-size:48; margin : 0">CHECKED BY: {{ QA }}</h1></center>
-<center><h1 style="border: 2px solid black; font-size:48; margin : 0">{{Date }}</h1></center>
+{% if Data == "YES" %}
+<center><h1 style="border: 2px solid black; font-size:50; margin : 0">DATA CONTAINING</h1></center>
+{% else %}
+<center><h1 style="border: 2px solid black; font-size:50; margin : 0">NO DATA CONTAINING</h1></center>
+{% endif %}
+<center><h1 style="border: 2px solid black; font-size:50; margin : 0">CHECKED BY: {{ QA }}</h1></center>
+<center><h1 style="border: 2px solid black; font-size:50; margin : 0">{{Date }}</h1></center>
 
 {% if UDM or UECM or ECTR or FMCEC or FM  == "y" %}
-    <center><h1 style="border: 2px solid black; font-size:48; margin : 0">R2 CONTROLLED STREAM</h1></center>
+    <center><h1 style="border: 2px solid black; font-size:50; margin : 0">R2 CONTROLLED STREAM</h1></center>
 {% else %}
-    <center><h1 style="border: 2px solid black; font-size:48; margin : 0">UNRESTRICTED STREAM</h1></center>
+    <center><h1 style="border: 2px solid black; font-size:50; margin : 0">UNRESTRICTED STREAM</h1></center>
 {% endif %}
