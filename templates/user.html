@@ -15,11 +15,11 @@
                 <table class="table table-hover table-border table-striped">
                         <tr>
                             ID: {{ our_user.id }}</br>
-                            Name:{{our_user.name}}</a> </br>
+                            Name: {{our_user.name}}</a> </br>
                             User Name: {{ our_user.username  }} </br>
                             Email: {{ our_user.email }}</br>
                             Department: {{ our_user.department }}</br>
-                            PW: {{ our_user.password_hash  }}
+                            <!--PW: {{ our_user.password_hash  }} -->
                         </tr>
                     </table>
                         <a class="btn btn-info" style="padding: 10px; margin: 10px" href="{{url_for('User_update', id=our_user.id)}}" role="button">Updated</a>

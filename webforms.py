@@ -6,8 +6,19 @@ from wtforms.validators import DataRequired, EqualTo, Length
 
 from wtforms.widgets import TextArea
 
+Commodity = [('Desktops', 'Desktops'), ('Laptops', 'Laptops'), ('Keyboards and Mice', 'Keyboards and Mice'),
+							('Docking Stations above cutline', 'Docking Stations above cutline'), ('Docking Stations below cutline', 'Docking Stations below cutline'),
+												  ('Mixed wires', 'Mixed wires'), ('Adapters', 'Adapters'), ('Batteries','Batteries'), ('Ram', 'Ram'),
+												  ('Networking', 'Networking'), ('Headsets', 'Headsets'), ('CAT 5', 'CAT 5'), ('LCDs', 'LCDs'),
+												('Green board', 'Green board'), ('IP Phones Below Cut Line', 'IP Phones Below Cut Line'), ('IP Phones Above Cut Line', 'IP Phones Above Cut Line'), ('Scrap servers','Scrap servers'),
+												  ('UPS/APC’s', 'UPS/APC’s'), ('Aluminum', 'Aluminum'),('Plastic', 'Plastic'), ('Steel','Steel'),
+												  ('Cardboard', 'Cardboard'), ('Trash', 'Trash'), ('Projectors', 'Projectors'), ('Media Players', 'Media Players'),
+			 ('Power Strips','Power Strips'),('Fans', 'Fans'), ('Speakers', 'Speakers'), ('Printers & Scanners', 'Printers & Scanners'), ('Copper','Copper')]
+
+Commodity.sort()
 
 
+QAs = [('Ruben G','Ruben G'),('Martin ','Martin'), ('Michael C', 'Michael C'), ('Scott G', 'Scott G'),('Mike V', 'Mike V')]
 
 class LoginForm(FlaskForm):
 	username = StringField("Username", validators=[DataRequired()])
@@ -45,13 +56,7 @@ class PostAuditDismantleForm(FlaskForm):
 	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
 	BatchNumber = StringField("Batch Number", validators=[DataRequired()])
 	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
-	Commodity = SelectField("Commodity", choices=[('Desktops', 'Desktops'), ('Laptops', 'Laptops'), ('Keyboards and Mice', 'Keyboards and Mice'),
-							('Mice', 'Mice'), ('Docking Stations above cutline', 'Docking Stations above cutline'), ('Docking Stations below cutline', 'Docking Stations below cutline'),
-												  ('Mixed wires', 'Mixed wires'), ('Adapters', 'Adapters'), ('Batteries','Batteries'), ('Ram', 'Ram'),
-												  ('Networking', 'Networking'), ('Headsets', 'Headsets'), ('CAT 5', 'CAT 5'), ('LCDs', 'LCDs'),
-												('Green board', 'Green board'), ('IP Phones', 'IP Phones'), ('Scrap servers','Scrap servers'),
-												  ('UPS/APC’s', 'UPS/APC’s'), ('Aluminum', 'Aluminum'),('Plastic', 'Plastic'), ('Steel','Steel'),
-												  ('Cardboard', 'Cardboard'), ('Trash', 'Trash')])
+	Commodity = SelectField("Commodity", choices=Commodity)
 	Dimms = StringField("Dimms", validators=[DataRequired()])
 	Dimms2 = StringField("Dimms", validators=[DataRequired()])
 	Dimms3 = StringField("Dimms", validators=[DataRequired()])
@@ -67,21 +72,7 @@ class InventoryWSForm(FlaskForm):
 	JobNumber = IntegerField("Job Number", validators=[DataRequired()])
 	BatchNumber = StringField("Batch Number", validators=[DataRequired()])
 	PoNumber = IntegerField("PO Number", validators=[DataRequired()])
-	Commodity = SelectField("Commodity", choices=[('Desktops', 'Desktops'), ('Laptops', 'Laptops'),
-												  ('Keyboards and Mice', 'Keyboards and Mice'),
-												  ('Docking Stations above cutline',
-																	 'Docking Stations above cutline'), (
-												  'Docking Stations below cutline',
-												  'Docking Stations below cutline'),
-												  ('Mixed wires', 'Mixed wires'), ('Adapters', 'Adapters'),
-												  ('Batteries', 'Batteries'), ('Ram', 'Ram'),
-												  ('Networking', 'Networking'), ('Headsets', 'Headsets'),
-												  ('CAT 5', 'CAT 5'), ('LCDs', 'LCDs'),
-												  ('Green board', 'Green board'), ('IP Phones', 'IP Phones'),
-												  ('Scrap servers', 'Scrap servers'),
-												  ('UPS/APC’s', 'UPS/APC’s'), ('Aluminum', 'Aluminum'),
-												  ('Plastic', 'Plastic'), ('Steel', 'Steel'),
-												  ('Cardboard', 'Cardboard'), ('Trash', 'Trash')])
+	Commodity = SelectField("Commodity", choices=Commodity)
 	Dimms = StringField("Dimms", validators=[DataRequired()])
 	Dimms2 = StringField("Dimms", validators=[DataRequired()])
 	Dimms3 = StringField("Dimms", validators=[DataRequired()])
@@ -94,13 +85,7 @@ class InventoryWSForm(FlaskForm):
 	Submit = SubmitField("Print")
 
 class ITADSortForm(FlaskForm):
-	Commodity = SelectField("Commodity", choices=[('Desktops', 'Desktops'), ('Laptops', 'Laptops'), ('Keyboards and Mice', 'Keyboards and Mice'),
-							('Docking Stations above cutline', 'Docking Stations above cutline'), ('Docking Stations below cutline', 'Docking Stations below cutline'),
-												  ('Mixed wires', 'Mixed wires'), ('Adapters', 'Adapters'), ('Batteries','Batteries'), ('Ram', 'Ram'),
-												  ('Networking', 'Networking'), ('Headsets', 'Headsets'), ('CAT 5', 'CAT 5'), ('LCDs', 'LCDs'),
-												('Green board', 'Green board'), ('IP Phones', 'IP Phones'), ('Scrap servers','Scrap servers'),
-												  ('UPS/APC’s', 'UPS/APC’s'), ('Aluminum', 'Aluminum'),('Plastic', 'Plastic'), ('Steel','Steel'),
-												  ('Cardboard', 'Cardboard'), ('Trash', 'Trash')])
+	Commodity = SelectField("Commodity", choices=Commodity)
 	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
 	Evaluated = SelectField("Evaluated", choices=[('NO', 'NO'), ('YES', 'YES')])
 	TareWeight = IntegerField("Tare Weight", validators=[DataRequired()])
@@ -170,7 +155,7 @@ class WholesaleClientShippingForm(FlaskForm):
 	CurrentPallet = StringField("Current Pallet", validators=[DataRequired()])
 	TotalPallets = StringField("Total Pallets", validators=[DataRequired()])
 	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
-	QA = SelectField("QA Checked By", choices=[('Jesse G', 'Jesse G'), ('Scott G', 'Scott G'),('Mike V', 'Mike V')])
+	QA = SelectField("QA Checked By", choices=QAs)
 	UECM = BooleanField("Unevaluated Equipment, Components & Materials")
 	UDM = BooleanField("Unsanitized Devices/Media")
 	ECTR = BooleanField("Equipment/Components for Test & Repair")
@@ -191,27 +176,13 @@ class EWasteClientShippingForm(FlaskForm):
 	Dimms = StringField("Dimms", validators=[DataRequired()])
 	Dimms2 = StringField("Dimms", validators=[DataRequired()])
 	Dimms3 = StringField("Dimms", validators=[DataRequired()])
-	Commodity = SelectField("Commodity", choices=[('Desktops', 'Desktops'), ('Laptops', 'Laptops'),
-												  ('Keyboards and Mice', 'Keyboards and Mice'),
-												  ('Docking Stations above cutline',
-												   'Docking Stations above cutline'), (
-													  'Docking Stations below cutline',
-													  'Docking Stations below cutline'),
-												  ('Mixed wires', 'Mixed wires'), ('Adapters', 'Adapters'),
-												  ('Batteries', 'Batteries'), ('Ram', 'Ram'),
-												  ('Networking', 'Networking'), ('Headsets', 'Headsets'),
-												  ('CAT 5', 'CAT 5'), ('LCDs', 'LCDs'),
-												  ('Green board', 'Green board'), ('IP Phones', 'IP Phones'),
-												  ('Scrap servers', 'Scrap servers'),
-												  ('UPS/APC’s', 'UPS/APC’s'), ('Aluminum', 'Aluminum'),
-												  ('Plastic', 'Plastic'), ('Steel', 'Steel'),
-												  ('Cardboard', 'Cardboard'), ('Trash', 'Trash')])
+	Commodity = SelectField("Commodity", choices=Commodity)
 	Category = SelectField("Category", choices=[('C0', 'C0'), ('C1', 'C1'), ('C2', 'C2')])
 	CurrentPallet = StringField("Current Pallet", validators=[DataRequired()])
 	TotalPallets = StringField("Total Pallets", validators=[DataRequired()])
 	Evaluated = SelectField("Evaluated", choices=[('YES', 'YES'), ('NO', 'NO')])
 	Data = SelectField("Data", choices=[('YES', 'YES'), ('NO', 'NO')])
-	QA = SelectField("QA Checked By", choices=[('Corey G', 'Corey G'),('Jesse G', 'Jesse G'),('Scott G', 'Scott G'),('Mike V', 'Mike V')])
+	QA = SelectField("QA Checked By", choices=QAs)
 	UECM = BooleanField("Unevaluated Equipment, Components & Materials")
 	UDM = BooleanField("Unsanitized Devices/Media")
 	ECTR = BooleanField("Equipment/Components for Test & Repair")
